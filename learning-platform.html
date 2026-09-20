@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOC Academy — Become a Job-Ready SOC Analyst L1</title>
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1a2234;
+    --bg-card: #161f33;
+    --border: #243049;
+    --text-primary: #e6edf3;
+    --text-secondary: #9aa7bd;
+    --text-muted: #6b7690;
+    --accent: #00d9ff;
+    --accent-dim: #0891b2;
+    --green: #00ff88;
+    --green-dim: #10b981;
+    --yellow: #fbbf24;
+    --red: #ff3860;
+    --orange: #fb923c;
+    --purple: #a78bfa;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "SF Mono", Monaco, "Cascadia Code", "Courier New", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+  code, pre, .mono { font-family: var(--font-mono); }
+  pre {
+    background: #05080f;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #c9d6e8;
+  }
+  code.inline {
+    background: #0a1220;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+
+  /* Layout */
+  .app { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: 260px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; color: #000;
+  }
+  .sidebar-logo h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .sidebar-logo .tag {
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .nav-section {
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item:hover { background: var(--bg-tertiary); color: var(--text-primary); text-decoration: none; }
+  .nav-item.active {
+    background: rgba(0, 217, 255, 0.08);
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .nav-item .nav-icon { width: 18px; text-align: center; font-size: 14px; }
+
+  .main {
+    flex: 1;
+    min-width: 0;
+    padding: 28px 36px 60px;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    gap: 16px;
+  }
+  .search-bar {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 10px 14px 10px 38px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .search-bar input:focus { outline: none; border-color: var(--accent); }
+  .search-bar::before {
+    content: "⌕";
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+  .user-chip {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-secondary);
+    padding: 6px 14px 6px 6px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+  }
+  .user-avatar {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: #000; font-size: 13px;
+  }
+  .user-chip .user-name { font-size: 13px; font-weight: 600; }
+  .user-chip .user-streak { font-size: 11px; color: var(--yellow); }
+
+  /* Components */
+  .page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .page-subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    font-size: 15px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+  .btn-primary:hover { background: #33e2ff; text-decoration: none; }
+  .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover { background: #22304a; text-decoration: none; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+  }
+  .btn-ghost:hover { color: var(--text-primary); text-decoration: none; }
+  .btn-success { background: var(--green-dim); color: #000; }
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-low { background: rgba(0, 255, 136, 0.15); color: var(--green); }
+  .badge-medium { background: rgba(251, 191, 36, 0.15); color: var(--yellow); }
+  .badge-high { background: rgba(255, 56, 96, 0.15); color: var(--red); }
+  .badge-critical { background: var(--red); color: #fff; }
+  .badge-info { background: rgba(0, 217, 255, 0.15); color: var(--accent); }
+  .badge-purple { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+
+  .progress-bar {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 4px;
+    transition: width 0.4s;
+  }
+  .progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  /* Landing page */
+  .hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    background: radial-gradient(ellipse at top, rgba(0, 217, 255, 0.12), transparent 60%);
+    border-radius: 12px;
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto 28px;
+  }
+  .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .feature {
+    padding: 22px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .feature-icon {
+    width: 44px; height: 44px;
+    background: rgba(0, 217, 255, 0.12);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .feature h3 { font-size: 15px; margin-bottom: 6px; }
+  .feature p { font-size: 13px; color: var(--text-secondary); }
+
+  /* Roadmap */
+  .roadmap { position: relative; padding-left: 30px; }
+  .roadmap::before {
+    content: "";
+    position: absolute;
+    left: 14px; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .roadmap-item {
+    position: relative;
+    margin-bottom: 14px;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .roadmap-item:hover { border-color: var(--accent); transform: translateX(4px); }
+  .roadmap-item::before {
+    content: "";
+    position: absolute;
+    left: -22px; top: 22px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border);
+  }
+  .roadmap-item.completed::before { background: var(--green); border-color: var(--green); }
+  .roadmap-item.in-progress::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0, 217, 255, 0.2); }
+  .roadmap-item.locked { opacity: 0.55; cursor: not-allowed; }
+  .roadmap-item .level-tag {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .roadmap-item h3 { font-size: 16px; margin-bottom: 4px; }
+  .roadmap-item p { font-size: 13px; color: var(--text-secondary); }
+
+  /* Module/Lesson */
+  .lesson-content {
+    max-width: 900px;
+  }
+  .lesson-content h2 {
+    font-size: 22px;
+    margin: 28px 0 14px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .lesson-content h3 {
+    font-size: 17px;
+    margin: 20px 0 10px;
+  }
+  .lesson-content p { margin-bottom: 12px; color: var(--text-secondary); }
+  .lesson-content ul, .lesson-content ol {
+    margin: 0 0 14px 22px;
+    color: var(--text-secondary);
+  }
+  .lesson-content li { margin-bottom: 6px; }
+  .lesson-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .lesson-content th, .lesson-content td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .lesson-content th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .callout {
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 16px 0;
+    border-left: 4px solid;
+  }
+  .callout-info { background: rgba(0, 217, 255, 0.08); border-color: var(--accent); }
+  .callout-warn { background: rgba(251, 191, 36, 0.08); border-color: var(--yellow); }
+  .callout-danger { background: rgba(255, 56, 96, 0.08); border-color: var(--red); }
+  .callout-success { background: rgba(0, 255, 136, 0.08); border-color: var(--green); }
+  .callout strong { color: var(--text-primary); }
+
+  .analogy-box {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(0, 217, 255, 0.05));
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin: 16px 0;
+  }
+  .analogy-box .label {
+    font-size: 11px;
+    color: var(--purple);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  /* Quiz */
+  .quiz-question {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .quiz-question .q-num {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .quiz-question .q-text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .quiz-option {
+    display: block;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+    color: var(--text-primary);
+  }
+  .quiz-option:hover { border-color: var(--accent); background: var(--bg-tertiary); }
+  .quiz-option.selected { border-color: var(--accent); background: rgba(0, 217, 255, 0.1); }
+  .quiz-option.correct { border-color: var(--green); background: rgba(0, 255, 136, 0.1); }
+  .quiz-option.incorrect { border-color: var(--red); background: rgba(255, 56, 96, 0.1); }
+  .quiz-explanation {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: rgba(0, 217, 255, 0.06);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* Alert cards */
+  .alert-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .alert-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .alert-card.severity-high { border-left: 4px solid var(--red); }
+  .alert-card.severity-medium { border-left: 4px solid var(--yellow); }
+  .alert-card.severity-low { border-left: 4px solid var(--green); }
+  .alert-card.severity-critical { border-left: 4px solid var(--red); background: rgba(255, 56, 96, 0.04); }
+  .alert-severity {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .alert-severity.high, .alert-severity.critical { background: rgba(255, 56, 96, 0.2); color: var(--red); }
+  .alert-severity.medium { background: rgba(251, 191, 36, 0.2); color: var(--yellow); }
+  .alert-severity.low { background: rgba(0, 255, 136, 0.2); color: var(--green); }
+  .alert-body { flex: 1; min-width: 0; }
+  .alert-title { font-weight: 600; margin-bottom: 4px; }
+  .alert-meta { font-size: 12px; color: var(--text-muted); display: flex; gap: 14px; flex-wrap: wrap; }
+  .alert-meta span::before { content: "•"; margin-right: 8px; color: var(--border); }
+  .alert-meta span:first-child::before { display: none; }
+
+  /* Log viewer */
+  .log-viewer {
+    background: #05080f;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .log-line { white-space: pre-wrap; word-break: break-word; }
+  .log-line .ts { color: #6b7690; }
+  .log-line .ip { color: var(--accent); }
+  .log-line .user { color: var(--yellow); }
+  .log-line .action-fail { color: var(--red); }
+  .log-line .action-success { color: var(--green); }
+  .log-line .action-warn { color: var(--orange); }
+
+  /* Flashcard */
+  .flashcard {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-tertiary));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 40px 30px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.4s;
+    perspective: 1000px;
+  }
+  .flashcard.flipped { background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-card)); }
+  .flashcard-label {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
+  }
+  .flashcard-text {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .flashcard-hint {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 10px 18px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .tab:hover { color: var(--text-primary); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+  }
+  .modal h2 { margin-bottom: 16px; }
+
+  /* Utilities */
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .gap-2 { gap: 8px; }
+  .gap-3 { gap: 12px; }
+  .gap-4 { gap: 16px; }
+  .mt-2 { margin-top: 8px; }
+  .mt-3 { margin-top: 12px; }
+  .mt-4 { margin-top: 16px; }
+  .mb-2 { margin-bottom: 8px; }
+  .mb-3 { margin-bottom: 12px; }
+  .mb-4 { margin-bottom: 16px; }
+  .text-muted { color: var(--text-muted); }
+  .text-sm { font-size: 13px; }
+  .text-xs { font-size: 11px; }
+  .font-mono { font-family: var(--font-mono); }
+  .hidden { display: none !important; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { padding: 20px; }
+    .hero h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+/* ========================================================================
+   SOC ACADEMY — Complete Learning Platform
+   ======================================================================== */
+
+/* ---------- DATA STORE ---------- */
+const DATA = {
+  modules: [
+    { id: "m0", level: 0, title: "Cybersecurity Orientation", desc: "Core concepts, terminology, and the SOC mindset.", lessons: 12, icon: "🛡️" },
+    { id: "m1", level: 1, title: "Networking Fundamentals", desc: "TCP/IP, protocols, ports, and how data moves.", lessons: 18, icon: "🌐" },
+    { id: "m2", level: 1, title: "Operating Systems", desc: "Linux & Windows fundamentals for security analysts.", lessons: 20, icon: "💻" },
+    { id: "m3", level: 2, title: "Security Fundamentals", desc: "Malware, attacks, and how adversaries operate.", lessons: 15, icon: "⚔️" },
+    { id: "m4", level: 3, title: "Logs & Log Analysis", desc: "Reading, parsing, and interpreting security logs.", lessons: 10, icon: "📜" },
+    { id: "m5", level: 3, title: "SIEM Fundamentals", desc: "Splunk, Sentinel, Elastic — core SIEM concepts.", lessons: 12, icon: "📊" },
+    { id: "m6", level: 4, title: "SOC Operations", desc: "How a SOC works, shift life, and L1 responsibilities.", lessons: 8, icon: "🏢" },
+    { id: "m7", level: 5, title: "Alert Triage", desc: "Validating, classifying, and investigating alerts.", lessons: 14, icon: "🔍" },
+    { id: "m8", level: 6, title: "Incident Response", desc: "The IR lifecycle and real-world response playbooks.", lessons: 12, icon: "🚨" },
+    { id: "m9", level: 7, title: "Threat Intelligence", desc: "IOCs, TTPs, and enriching investigations.", lessons: 10, icon: "🕵️" },
+    { id: "m10", level: 7, title: "MITRE ATT&CK", desc: "Mapping adversary behavior to a common framework.", lessons: 14, icon: "🎯" },
+    { id: "m11", level: 8, title: "Endpoint Security", desc: "EDR, process trees, and endpoint telemetry.", lessons: 10, icon: "🖥️" },
+    { id: "m12", level: 8, title: "Windows Security", desc: "Active Directory, Event IDs, and Windows attacks.", lessons: 12, icon: "🪟" },
+    { id: "m13", level: 8, title: "Network Security", desc: "Firewalls, IDS/IPS, and network monitoring.", lessons: 10, icon: "🔒" },
+    { id: "m14", level: 8, title: "Email Security", desc: "Phishing, headers, SPF/DKIM/DMARC.", lessons: 8, icon: "📧" },
+    { id: "m15", level: 8, title: "Cloud Security Basics", desc: "AWS, Azure, IAM, and cloud log sources.", lessons: 10, icon: "☁️" },
+    { id: "m16", level: 9, title: "Security Tools", desc: "Nmap, Wireshark, VirusTotal, CyberChef, and more.", lessons: 14, icon: "🧰" },
+    { id: "m17", level: 9, title: "Python for SOC", desc: "Scripting log parsers, IOC extractors, and analyzers.", lessons: 10, icon: "🐍" },
+    { id: "m18", level: 10, title: "SOC Projects", desc: "Build portfolio-ready security projects.", lessons: 5, icon: "🛠️" },
+    { id: "m19", level: 10, title: "Interactive SOC Lab", desc: "Simulated SOC investigations with real alerts.", lessons: 20, icon: "🧪" },
+    { id: "m20", level: 11, title: "Interview Preparation", desc: "Technical, behavioral, and scenario-based questions.", lessons: 1, icon: "💼" },
+    { id: "m21", level: 11, title: "Resume & Job Readiness", desc: "Build a truthful cybersecurity resume.", lessons: 4, icon: "📄" }
+  ],
+
+  lessons: {
+    "m0-l1": {
+      moduleId: "m0", title: "What is Cybersecurity?", difficulty: "beginner",
+      content: `
+<h2>1. Aim</h2>
+<p>Understand what cybersecurity means, why it exists, and how it relates to the work of a SOC analyst.</p>
+
+<h2>2. Why SOC Analysts Need It</h2>
+<p>Every alert you investigate, every log you read, and every decision you make in a SOC is grounded in the goals of cybersecurity: protecting information and systems from unauthorized access, misuse, or destruction.</p>
+
+<h2>3. Beginner Explanation</h2>
+<p>Imagine your house. You have a front door with a lock, windows with curtains, and maybe a security camera. <strong>Cybersecurity</strong> is the same idea — but for computers, networks, and the data they hold. It's the practice of protecting digital systems from people who want to steal, damage, or spy on them.</p>
+
+<div class="analogy-box">
+  <div class="label">REAL-WORLD ANALOGY</div>
+  A bank protects money with walls, guards, cameras, and vaults. Cybersecurity protects data with firewalls, encryption, monitoring, and access controls.
+</div>
+
+<h2>4. Technical Explanation</h2>
+<p>Cybersecurity (also called information security or InfoSec) is the practice of protecting systems, networks, programs, and data from <strong>digital attacks</strong>. These attacks usually aim to:</p>
+<ul>
+  <li>Access sensitive information without authorization</li>
+  <li>Alter or destroy data</li>
+  <li>Extort money from users or organizations</li>
+  <li>Disrupt normal business operations</li>
+</ul>
+
+<h2>5. The CIA Triad</h2>
+<p>The foundation of all cybersecurity is the <strong>CIA Triad</strong>:</p>
+<table>
+  <tr><th>Principle</th><th>Meaning</th><th>Example</th></tr>
+  <tr><td><strong>Confidentiality</strong></td><td>Only authorized people can see the data</td><td>Encrypted files, passwords</td></tr>
+  <tr><td><strong>Integrity</strong></td><td>Data cannot be changed by unauthorized users</td><td>Checksums, digital signatures</td></tr>
+  <tr><td><strong>Availability</strong></td><td>Systems and data are accessible when needed</td><td>Backups, DDoS protection</td></tr>
+</table>
+
+<h2>6. SOC Scenario</h2>
+<p>You're on shift and get an alert: <em>"Unusual file access on finance server."</em> Your job is to figure out whether this is a violation of <strong>confidentiality</strong> (someone reading files they shouldn't), <strong>integrity</strong> (someone modifying files), or <strong>availability</strong> (someone trying to take the server down).</p>
+
+<h2>7. Quick Revision</h2>
+<ul>
+  <li>Cybersecurity protects systems, networks, and data from attacks.</li>
+  <li>The CIA Triad: Confidentiality, Integrity, Availability.</li>
+  <li>Every SOC alert maps to a violation (or potential violation) of one or more CIA principles.</li>
+  <li>Cybersecurity is a continuous process, not a one-time setup.</li>
+  <li>SOC analysts are the defenders — the "blue team."</li>
+</ul>`
+    },
+    "m0-l2": {
+      moduleId: "m0", title: "Threats, Vulnerabilities & Risk", difficulty: "beginner",
+      content: `
+<h2>1. Aim</h2>
+<p>Learn the difference between a threat, a vulnerability, and a risk — three terms you'll hear every day in a SOC.</p>
+
+<h2>2. Why SOC Analysts Need It</h2>
+<p>When you investigate an alert, you're often answering: "Was there a threat? Did it exploit a vulnerability? What was the risk?" Mixing these up leads to wrong severity ratings and bad decisions.</p>
+
+<h2>3. Beginner Explanation</h2>
+<div class="analogy-box">
+  <div class="label">REAL-WORLD ANALOGY</div>
+  <strong>Threat:</strong> A burglar walking around your neighborhood.<br>
+  <strong>Vulnerability:</strong> Your front door has a broken lock.<br>
+  <strong>Risk:</strong> The chance the burglar gets in because of the broken lock.
+</div>
+
+<h2>4. Technical Definitions</h2>
+<table>
+  <tr><th>Term</th><th>Definition</th><th>Example</th></tr>
+  <tr><td><strong>Threat</strong></td><td>Anything that can cause harm by exploiting a weakness</td><td>Ransomware gang, malicious insider, flood</td></tr>
+  <tr><td><strong>Vulnerability</strong></td><td>A weakness in a system, process, or control</td><td>Unpatched software, weak password, open port</td></tr>
+  <tr><td><strong>Risk</strong></td><td>The potential for loss when a threat exploits a vulnerability</td><td>Risk = Threat × Vulnerability × Impact</td></tr>
+  <tr><td><strong>Exploit</strong></td><td>The actual method used to take advantage of a vulnerability</td><td>A specific piece of malware or attack code</td></tr>
+  <tr><td><strong>Attack</strong></td><td>An active attempt to breach security</td><td>Phishing email sent to employees</td></tr>
+</table>
+
+<h2>5. Event vs Alert vs Incident</h2>
+<p>These three are often confused. Here's the difference:</p>
+<table>
+  <tr><th>Term</th><th>Meaning</th></tr>
+  <tr><td><strong>Event</strong></td><td>Any observable occurrence in a system (a user logged in, a file was accessed)</td></tr>
+  <tr><td><strong>Alert</strong></td><td>An event flagged as potentially suspicious by a rule or analyst</td></tr>
+  <tr><td><strong>Incident</strong></td><td>A confirmed violation of security policy or a real attack</td></tr>
+</table>
+
+<div class="callout callout-info">
+  <strong>Remember:</strong> Every incident starts as an event. Some events become alerts. Some alerts become incidents. Most alerts are false positives — that's why triage exists.
+</div>
+
+<h2>6. SOC Scenario</h2>
+<p>You see 50 failed login attempts from IP <code class="inline">185.220.101.42</code> against user <code class="inline">admin</code>. Ask yourself:</p>
+<ul>
+  <li><strong>Threat:</strong> A brute-force attacker (possibly a botnet).</li>
+  <li><strong>Vulnerability:</strong> Weak password policy, no account lockout, public RDP.</li>
+  <li><strong>Risk:</strong> High — if the attacker guesses the password, they gain admin access.</li>
+  <li><strong>Event:</strong> Each failed login.</li>
+  <li><strong>Alert:</strong> The SIEM rule that triggered.</li>
+  <li><strong>Incident:</strong> Only if a successful login is found afterward.</li>
+</ul>
+
+<h2>7. Quick Revision</h2>
+<ul>
+  <li>Threat = who/what wants to harm you.</li>
+  <li>Vulnerability = your weakness.</li>
+  <li>Risk = what happens if the threat uses the weakness.</li>
+  <li>Event → Alert → Incident is the SOC pipeline.</li>
+  <li>Most alerts are false positives — verify before escalating.</li>
+</ul>`
+    },
+    "m1-l1": {
+      moduleId: "m1", title: "IP Addresses, Ports & Protocols", difficulty: "beginner",
+      content: `
+<h2>1. Aim</h2>
+<p>Understand IP addresses, ports, and protocols — the language of every network log you'll read as a SOC analyst.</p>
+
+<h2>2. Why SOC Analysts Need It</h2>
+<p>Every firewall log, every SIEM alert, every packet capture mentions IPs and ports. If you can't read them, you can't investigate anything.</p>
+
+<h2>3. Beginner Explanation</h2>
+<div class="analogy-box">
+  <div class="label">REAL-WORLD ANALOGY</div>
+  Think of the internet like the postal system:<br>
+  • <strong>IP address</strong> = a house address (where data goes)<br>
+  • <strong>Port</strong> = a specific door or mailbox at that house (which service receives it)<br>
+  • <strong>Protocol</strong> = the language the letter is written in (how data is formatted)
+</div>
+
+<h2>4. IP Addresses</h2>
+<p>An <strong>IP address</strong> uniquely identifies a device on a network.</p>
+<ul>
+  <li><strong>IPv4:</strong> <code class="inline">192.168.1.10</code> (32-bit, ~4 billion addresses)</li>
+  <li><strong>IPv6:</strong> <code class="inline">2001:0db8:85a3::8a2e:0370:7334</code> (128-bit, practically unlimited)</li>
+  <li><strong>Private IPs:</strong> <code class="inline">10.x.x.x</code>, <code class="inline">172.16-31.x.x</code>, <code class="inline">192.168.x.x</code> — used inside networks, not routable on the internet.</li>
+  <li><strong>Public IPs:</strong> Routable on the internet. Assigned by your ISP.</li>
+</ul>
+
+<h2>5. Ports</h2>
+<p>A <strong>port</strong> is a number (0–65535) that identifies a specific service on a device.</p>
+<table>
+  <tr><th>Port</th><th>Protocol</th><th>Use</th></tr>
+  <tr><td>21</td><td>FTP</td><td>File transfer</td></tr>
+  <tr><td>22</td><td>SSH</td><td>Secure remote login</td></tr>
+  <tr><td>23</td><td>Telnet</td><td>Unencrypted remote login (insecure)</td></tr>
+  <tr><td>25</td><td>SMTP</td><td>Email sending</td></tr>
+  <tr><td>53</td><td>DNS</td><td>Domain name resolution</td></tr>
+  <tr><td>80</td><td>HTTP</td><td>Unencrypted web traffic</td></tr>
+  <tr><td>110</td><td>POP3</td><td>Email receiving</td></tr>
+  <tr><td>143</td><td>IMAP</td><td>Email receiving</td></tr>
+  <tr><td>443</td><td>HTTPS</td><td>Encrypted web traffic</td></tr>
+  <tr><td>445</td><td>SMB</td><td>Windows file sharing</td></tr>
+  <tr><td>3389</td><td>RDP</td><td>Remote desktop</td></tr>
+</table>
+
+<h2>6. Protocols</h2>
+<p>A <strong>protocol</strong> is a set of rules for communication.</p>
+<ul>
+  <li><strong>TCP</strong> — reliable, connection-oriented (like a phone call). Used for HTTP, SSH, email.</li>
+  <li><strong>UDP</strong> — fast, connectionless (like sending a letter). Used for DNS, streaming, VoIP.</li>
+  <li><strong>ICMP</strong> — used for diagnostics (ping, traceroute).</li>
+</ul>
+
+<h2>7. The TCP 3-Way Handshake</h2>
+<p>Every TCP connection starts with three steps:</p>
+<pre>Client          Server
+  |---SYN--------&gt;|     (1) "I want to connect"
+  |&lt;--SYN-ACK-----|     (2) "OK, I'm ready"
+  |---ACK---------&gt;|     (3) "Great, let's talk"</pre>
+
+<h2>8. SOC Scenario</h2>
+<p>You see this firewall log:</p>
+<pre>2026-09-20 14:22:11  src=203.0.113.45  dst=10.0.1.25  proto=TCP  sport=44321  dport=445  action=ALLOW</pre>
+<p>What does this tell you?</p>
+<ul>
+  <li>An external IP (<code class="inline">203.0.113.45</code>) is connecting to an internal machine.</li>
+  <li>Destination port <strong>445</strong> = SMB (Windows file sharing).</li>
+  <li>This is suspicious — SMB should rarely be exposed to the internet.</li>
+  <li>Next steps: check what the external IP is, check the internal host, look for related events.</li>
+</ul>
+
+<h2>9. Quick Revision</h2>
+<ul>
+  <li>IP = address of a device. Port = specific service on that device.</li>
+  <li>Memorize common ports: 22, 53, 80, 443, 445, 3389.</li>
+  <li>TCP is reliable; UDP is fast.</li>
+  <li>Private IPs (10.x, 172.16-31.x, 192.168.x) are internal-only.</li>
+  <li>Unexpected ports in logs = a place to start investigating.</li>
+</ul>`
+    },
+    "m4-l1": {
+      moduleId: "m4", title: "Reading Security Logs", difficulty: "beginner",
+      content: `
+<h2>1. Aim</h2>
+<p>Learn how to read and interpret security logs — the single most important skill for a SOC L1 analyst.</p>
+
+<h2>2. Why SOC Analysts Need It</h2>
+<p>Logs are the evidence. Every investigation, every triage decision, every escalation starts with reading logs correctly. If you can't read them, you can't do the job.</p>
+
+<h2>3. Beginner Explanation</h2>
+<p>A <strong>log</strong> is simply a record of something that happened. Your phone keeps logs of calls. A bank keeps logs of transactions. Computers keep logs of everything: logins, file access, network connections, errors, and more.</p>
+
+<div class="analogy-box">
+  <div class="label">REAL-WORLD ANALOGY</div>
+  A security guard's notebook at a building entrance: who came in, what time, which door, what they were carrying. Logs are the digital version of that notebook.
+</div>
+
+<h2>4. Common Log Fields</h2>
+<table>
+  <tr><th>Field</th><th>Meaning</th><th>Example</th></tr>
+  <tr><td>Timestamp</td><td>When the event happened</td><td>2026-09-20 09:42:31</td></tr>
+  <tr><td>Source IP</td><td>Where the event came from</td><td>185.220.101.42</td></tr>
+  <tr><td>Destination IP</td><td>Where the event was going</td><td>10.0.1.25</td></tr>
+  <tr><td>Username</td><td>Who performed the action</td><td>admin</td></tr>
+  <tr><td>Hostname</td><td>Which device</td><td>WS-FINANCE-01</td></tr>
+  <tr><td>Port</td><td>Which service</td><td>445</td></tr>
+  <tr><td>Protocol</td><td>TCP/UDP/etc</td><td>TCP</td></tr>
+  <tr><td>Action</td><td>What happened</td><td>ALLOW / DENY / FAILED</td></tr>
+  <tr><td>Event ID</td><td>Windows-specific code</td><td>4625</td></tr>
+</table>
+
+<h2>5. A Real Windows Logon Failure</h2>
+<pre>LogName: Security
+Source: Microsoft-Windows-Security-Auditing
+Date: 2026-09-20T09:42:31.445Z
+EventID: 4625
+Level: Information
+Computer: DC01.corp.local
+Message:
+  An account failed to log on.
+
+  Subject:
+    Security ID: NULL SID
+    Account Name: -
+  Logon Type: 3
+  Account For Which Logon Failed:
+    Security ID: NULL SID
+    Account Name: admin
+    Account Domain: CORP
+  Failure Information:
+    Failure Reason: Unknown user name or bad password.
+    Status: 0xC000006D
+    Sub Status: 0xC000006A
+  Network Information:
+    Workstation Name: -
+    Source Network Address: 185.220.101.42
+    Source Port: 52144</pre>
+
+<h2>6. What to Notice</h2>
+<ul>
+  <li><strong>EventID 4625</strong> = failed logon. This is the #1 event for brute-force detection.</li>
+  <li><strong>Account Name: admin</strong> — attacker is targeting a privileged account.</li>
+  <li><strong>Failure Reason: Unknown user name or bad password</strong> — classic credential attack.</li>
+  <li><strong>Source Network Address: 185.220.101.42</strong> — external IP. Look it up in threat intel.</li>
+  <li><strong>Logon Type 3</strong> = network logon (not interactive). Typical of remote attacks.</li>
+</ul>
+
+<h2>7. Hands-on Task</h2>
+<p>Look at this log and answer the questions:</p>
+<pre>2026-09-20 10:15:44 src=192.168.1.50 dst=91.215.12.88 proto=TCP dport=443 bytes=52428800 user=jdoe action=ALLOW</pre>
+<p><strong>Questions:</strong></p>
+<ol>
+  <li>What is the source? What is the destination?</li>
+  <li>How much data was transferred?</li>
+  <li>What protocol/port is being used?</li>
+  <li>Is this suspicious? Why or why not?</li>
+</ol>
+
+<div class="callout callout-info">
+  <strong>Hint:</strong> 52,428,800 bytes = ~50 MB. An internal user sending 50 MB to an unknown external IP over HTTPS could be data exfiltration — or it could be a legitimate cloud backup. Context is everything.
+</div>
+
+<h2>8. Quick Revision</h2>
+<ul>
+  <li>Logs are records of events on systems and networks.</li>
+  <li>Learn to read: timestamp, source/dest IP, user, port, action, event ID.</li>
+  <li>Windows Event ID 4625 = failed logon (brute force indicator).</li>
+  <li>Always ask: who, what, when, where, how much.</li>
+  <li>A single log line rarely tells the full story — look for patterns.</li>
+</ul>`
+    }
+  },
+
+  quizzes: {
+    "m0": [
+      { q: "What does the 'C' in the CIA Triad stand for?", options: ["Control", "Confidentiality", "Compliance", "Cyber"], answer: 1, explanation: "Confidentiality ensures only authorized users can access data." },
+      { q: "Which of the following is a vulnerability?", options: ["A ransomware gang", "An unpatched server", "A phishing email", "A firewall"], answer: 1, explanation: "A vulnerability is a weakness. An unpatched server is a weakness that can be exploited." },
+      { q: "What is the correct order in a SOC pipeline?", options: ["Alert → Event → Incident", "Incident → Alert → Event", "Event → Alert → Incident", "Event → Incident → Alert"], answer: 2, explanation: "Events are observable occurrences. Alerts are flagged events. Incidents are confirmed security violations." },
+      { q: "A brute-force attack targeting the 'admin' account is primarily a threat to:", options: ["Availability", "Integrity", "Confidentiality", "Authenticity"], answer: 2, explanation: "Brute-force attacks aim to gain unauthorized access, violating confidentiality." },
+      { q: "What is the difference between a threat and a vulnerability?", options: ["They are the same thing", "A threat is a weakness; a vulnerability is an attacker", "A threat is what can harm you; a vulnerability is a weakness", "A threat is internal; a vulnerability is external"], answer: 2, explanation: "Threats are actors/events that cause harm. Vulnerabilities are weaknesses they exploit." }
+    ],
+    "m1": [
+      { q: "Which port does HTTPS use by default?", options: ["80", "443", "22", "25"], answer: 1, explanation: "HTTPS uses port 443. HTTP uses port 80." },
+      { q: "Which of these is a private IP address?", options: ["8.8.8.8", "203.0.113.45", "192.168.1.10", "1.1.1.1"], answer: 2, explanation: "192.168.x.x is a private IP range (RFC 1918)." },
+      { q: "What protocol is used for domain name resolution?", options: ["HTTP", "DNS", "FTP", "SMTP"], answer: 1, explanation: "DNS (Domain Name System) translates domain names to IP addresses." },
+      { q: "In the TCP 3-way handshake, what does the client send first?", options: ["ACK", "SYN", "SYN-ACK", "FIN"], answer: 1, explanation: "The client sends a SYN (synchronize) packet to initiate a connection." },
+      { q: "Port 3389 is commonly used for:", options: ["SSH", "RDP", "HTTP", "SMB"], answer: 1, explanation: "Port 3389 is used by RDP (Remote Desktop Protocol)." }
+    ],
+    "m4": [
+      { q: "Windows Event ID 4625 indicates:", options: ["Successful logon", "Failed logon", "Account created", "Password changed"], answer: 1, explanation: "Event ID 4625 = failed logon. Critical for detecting brute-force attacks." },
+      { q: "Which field tells you WHERE an event originated?", options: ["Event ID", "Source IP", "Timestamp", "Username"], answer: 1, explanation: "Source IP identifies the origin of the network event." },
+      { q: "A log shows 500 failed logins from one IP in 5 minutes. This is most likely:", options: ["Normal user behavior", "A brute-force attack", "A DNS query", "A backup job"], answer: 1, explanation: "High-volume failed logins from a single source are classic brute-force behavior." },
+      { q: "Logon Type 3 in Windows indicates:", options: ["Interactive logon", "Network logon", "Service logon", "Batch logon"], answer: 1, explanation: "Logon Type 3 = network logon (e.g., accessing a shared folder or remote service)." },
+      { q: "Which of these is NOT a common log source?", options: ["Firewall", "Web server", "CPU temperature sensor", "Active Directory"], answer: 2, explanation: "While some systems log hardware metrics, CPU temperature is not a typical security log source." }
+    ]
+  },
+
+  alerts: [
+    { id: "A001", severity: "high", title: "Multiple failed authentication attempts", source: "185.220.101.42", target: "admin@corp.local", time: "2026-09-20 09:42:31", count: 87, geo: "Russia", description: "87 failed login attempts against the 'admin' account from a known Tor exit node in the last 10 minutes." },
+    { id: "A002", severity: "critical", title: "Malware detected on endpoint", source: "WS-FINANCE-03", target: "C:\\Users\\jsmith\\Downloads\\invoice.exe", time: "2026-09-20 10:15:22", count: 1, geo: "Internal", description: "Windows Defender detected Trojan:Win32/Emotet.A!cl on a finance workstation. The file was downloaded from an email attachment 12 minutes ago." },
+    { id: "A003", severity: "medium", title: "Suspicious PowerShell execution", source: "WS-HR-12", target: "powershell.exe", time: "2026-09-20 11:03:44", count: 1, geo: "Internal", description: "Encoded PowerShell command executed by WINWORD.EXE. Command line contains -enc base64 string and makes an outbound connection to 91.215.12.88." },
+    { id: "A004", severity: "low", title: "Port scan detected", source: "198.51.100.23", target: "10.0.1.0/24", time: "2026-09-20 11:45:10", count: 1, geo: "Netherlands", description: "Sequential port scan detected against the 10.0.1.0/24 subnet. 1,247 connection attempts across ports 1-1024 in 45 seconds." },
+    { id: "A005", severity: "medium", title: "Impossible travel login", source: "jdoe@corp.local", target: "Azure AD", time: "2026-09-20 12:22:08", count: 2, geo: "USA → Nigeria", description: "User jdoe logged in from New York at 12:10 and from Lagos at 12:22. Physically impossible travel in 12 minutes." },
+    { id: "A006", severity: "high", title: "Lateral movement via SMB", source: "WS-HR-12", target: "DC01.corp.local", time: "2026-09-20 13:05:17", count: 14, geo: "Internal", description: "Workstation WS-HR-12 (already flagged for suspicious PowerShell) is now making SMB connections to the domain controller using the jdoe account." },
+    { id: "A007", severity: "medium", title: "Large outbound data transfer", source: "10.0.1.50", target: "91.215.12.88", time: "2026-09-20 13:42:55", count: 1, geo: "Internal → Romania", description: "52 MB transferred from internal host to external IP over HTTPS. Destination IP is associated with a known file-sharing service." },
+    { id: "A008", severity: "high", title: "New admin account created", source: "DC01.corp.local", target: "svc_backup2", time: "2026-09-20 14:10:03", count: 1, geo: "Internal", description: "A new user 'svc_backup2' was created and immediately added to Domain Admins group by user 'admin' at 2 AM. The 'admin' account had no prior history of creating accounts." }
+  ],
+
+  alertInvestigations: {
+    "A001": {
+      questions: [
+        { q: "What is your FIRST step when you see this alert?", options: ["Immediately block the IP", "Check if any login succeeded after the failures", "Ignore it, brute force is common", "Call the admin user"], answer: 1, explanation: "The critical question is: did the attacker succeed? Check for Event ID 4624 (successful logon) from the same source IP AFTER the failures." },
+        { q: "You find a successful login from 185.220.101.42 two minutes after the failures. What now?", options: ["This is a false positive", "This is a confirmed incident — escalate to L2/IR", "Reset the password and close the ticket", "Wait and see what happens"], answer: 1, explanation: "Successful login after many failures from a suspicious IP is a strong indicator of compromise. This is a confirmed incident requiring immediate escalation." },
+        { q: "Which evidence would you collect?", options: ["Only the failed logon events", "Source IP reputation, successful logons, subsequent activity, affected assets", "Just the username", "Nothing, it's already escalated"], answer: 1, explanation: "Full context: IP reputation (AbuseIPDB, VirusTotal), successful logons, what the attacker did after logging in, which systems were accessed." },
+        { q: "What severity would you assign?", options: ["Low", "Medium", "High or Critical", "Informational"], answer: 2, explanation: "Brute force with successful compromise of an admin account is High/Critical. Admin access means full domain compromise is possible." }
+      ]
+    },
+    "A002": {
+      questions: [
+        { q: "What is your FIRST action?", options: ["Delete the file immediately", "Isolate the host from the network", "Email the user", "Run a full antivirus scan"], answer: 1, explanation: "Isolate the endpoint to prevent lateral movement. Emotet is known to spread through networks. Containment before investigation." },
+        { q: "What should you check NEXT?", options: ["Whether other hosts are infected", "What the user was doing before the download", "Both A and B", "Nothing else"], answer: 2, explanation: "Check for lateral movement (other hosts) AND understand the initial vector (user behavior, email) to prevent recurrence." },
+        { q: "The file came from an email attachment. What's the next step?", options: ["Delete the email", "Quarantine the email across the organization, check who else received it", "Ignore it", "Forward to the user"], answer: 1, explanation: "Quarantine the malicious email organization-wide. Check mail logs for other recipients. This is part of containment." }
+      ]
+    }
+  },
+
+  interviewQuestions: [
+    { category: "Beginner", q: "What is cybersecurity?", answer: "Cybersecurity is the practice of protecting systems, networks, and data from digital attacks. It's built on the CIA triad: Confidentiality, Integrity, and Availability." },
+    { category: "Beginner", q: "What is a SOC?", answer: "A Security Operations Center (SOC) is a team responsible for monitoring, detecting, and responding to security incidents across an organization. SOC analysts work in shifts to provide 24/7 coverage." },
+    { category: "Beginner", q: "What does an L1 SOC analyst do?", answer: "An L1 analyst is the first line of defense. They monitor SIEM alerts, perform initial triage, classify alerts as true/false positives, contain simple incidents, and escalate complex ones to L2/L3. They document everything in tickets." },
+    { category: "Beginner", q: "What is SIEM?", answer: "SIEM (Security Information and Event Management) is a platform that collects logs from across an organization, normalizes them, correlates events using rules, and generates alerts for suspicious activity. Examples: Splunk, Microsoft Sentinel, Elastic Security." },
+    { category: "Networking", q: "What happens when you type a URL into a browser?", answer: "1) Browser checks cache. 2) DNS resolves the domain to an IP. 3) TCP 3-way handshake with the server. 4) TLS handshake if HTTPS. 5) HTTP GET request sent. 6) Server responds with HTML. 7) Browser renders the page and requests additional resources." },
+    { category: "Networking", q: "What is the difference between TCP and UDP?", answer: "TCP is connection-oriented and reliable — it guarantees delivery via acknowledgments and retransmission (used for HTTP, SSH, email). UDP is connectionless and fast but unreliable — no guarantees (used for DNS, streaming, VoIP)." },
+    { category: "Networking", q: "What is DNS?", answer: "DNS (Domain Name System) translates human-readable domain names (google.com) into IP addresses (142.250.80.46). It uses UDP port 53 by default. Attackers abuse DNS for exfiltration, C2, and phishing." },
+    { category: "SOC", q: "You receive 100 failed login alerts. What do you do?", answer: "1) Check if any succeeded — that's the priority. 2) Identify the source IP and target accounts. 3) Check IP reputation (AbuseIPDB, VirusTotal). 4) Look for patterns: same IP, same user, time window. 5) If no success and IP is external malicious → block at firewall, mark as brute force. 6) If success → escalate as incident. 7) Document everything." },
+    { category: "SOC", q: "How do you determine if an alert is a false positive?", answer: "Gather context: check source/destination reputation, user behavior history, related events, business context (is this a known admin task?). Compare against baselines. If the activity is expected and benign, it's a false positive. Document the reasoning." },
+    { category: "SOC", q: "When would you escalate an alert?", answer: "Escalate when: the alert is a true positive with confirmed compromise, you lack permissions to contain it, it involves critical assets, it's beyond your expertise, or it matches a known high-severity playbook (ransomware, data exfiltration, domain admin compromise)." },
+    { category: "SIEM", q: "What is log normalization?", answer: "Log normalization converts raw logs from different sources (Windows, Linux, firewalls) into a common format so the SIEM can parse, correlate, and search them uniformly. Example: mapping 'src_ip', 'SourceIP', and 'source-address' all to a single 'src_ip' field." },
+    { category: "SIEM", q: "What is correlation in SIEM?", answer: "Correlation is the process of linking related events across multiple sources to identify patterns that indicate an attack. Example: correlating a failed login (Windows) + suspicious PowerShell (EDR) + outbound C2 connection (firewall) into a single incident." },
+    { category: "IR", q: "What are the phases of incident response?", answer: "NIST's 4 phases: 1) Preparation, 2) Detection & Analysis, 3) Containment/Eradication/Recovery, 4) Post-Incident Activity (lessons learned). SANS has 6: Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned." },
+    { category: "Scenario", q: "You see an alert: 'Encoded PowerShell executed by WINWORD.EXE, outbound connection to suspicious IP.' Walk me through your investigation.", answer: "1) Validate: confirm the event in EDR logs. 2) Check the parent process (Word spawning PowerShell is suspicious — likely macro malware). 3) Decode the base64 command — what does it do? 4) Check the destination IP in VirusTotal/AbuseIPDB. 5) Check the user — did they open a suspicious email attachment? 6) Check for lateral movement from that host. 7) If confirmed malicious: isolate host, preserve evidence, escalate to IR. 8) Document timeline, IOCs, and actions taken." },
+    { category: "Scenario", q: "A user reports their computer is 'acting strange.' What do you do?", answer: "1) Isolate the machine from the network immediately. 2) Interview the user: what did they click/download? When did it start? 3) Check EDR/AV logs for detections. 4) Review recent process executions, network connections, file changes. 5) Check for persistence mechanisms (scheduled tasks, registry run keys, new services). 6) If malware confirmed: follow IR playbook — contain, eradicate, recover. 7) Check if other machines show similar behavior." }
+  ],
+
+  flashcards: [
+    { front: "What is the CIA Triad?", back: "Confidentiality, Integrity, Availability — the three pillars of information security." },
+    { front: "Event vs Alert vs Incident", back: "Event: any observable occurrence. Alert: flagged suspicious event. Incident: confirmed security violation." },
+    { front: "Port 22", back: "SSH — Secure Shell. Encrypted remote administration." },
+    { front: "Port 53", back: "DNS — Domain Name System. Translates domain names to IPs." },
+    { front: "Port 80", back: "HTTP — unencrypted web traffic." },
+    { front: "Port 443", back: "HTTPS — encrypted web traffic (HTTP over TLS)." },
+    { front: "Port 445", back: "SMB — Server Message Block. Windows file sharing. Frequently targeted by attackers." },
+    { front: "Port 3389", back: "RDP — Remote Desktop Protocol. High-value target for attackers." },
+    { front: "Windows Event ID 4624", back: "Successful logon." },
+    { front: "Windows Event ID 4625", back: "Failed logon. Key indicator for brute-force detection." },
+    { front: "Windows Event ID 4688", back: "Process creation. Shows what commands/programs ran." },
+    { front: "Windows Event ID 4720", back: "User account created. Suspicious if unexpected." },
+    { front: "Windows Event ID 4728 / 4732", back: "User added to security-enabled global/local group. Watch for privilege escalation." },
+    { front: "Windows Event ID 4740", back: "Account locked out. Often indicates brute force." },
+    { front: "What is an IOC?", back: "Indicator of Compromise — artifact observed that indicates a breach (IP, domain, hash, URL)." },
+    { front: "What is a TTP?", back: "Tactics, Techniques, and Procedures — how an adversary operates." },
+    { front: "What is SIEM?", back: "Security Information and Event Management — collects, normalizes, correlates logs to detect threats." },
+    { front: "What is EDR?", back: "Endpoint Detection and Response — monitors endpoints for suspicious behavior and enables response." },
+    { front: "What is MITRE ATT&CK?", back: "A knowledge base of adversary tactics and techniques based on real-world observations." },
+    { front: "TCP 3-Way Handshake", back: "SYN → SYN-ACK → ACK. Establishes a reliable TCP connection." },
+    { front: "What is phishing?", back: "Fraudulent messages (usually email) designed to trick users into revealing credentials or clicking malicious links." },
+    { front: "What is ransomware?", back: "Malware that encrypts files and demands payment for decryption." },
+    { front: "What is lateral movement?", back: "An attacker moving through a network from the initial compromise point to higher-value targets." },
+    { front: "What is C2?", back: "Command and Control — infrastructure attackers use to communicate with compromised systems." },
+    { front: "What is a false positive?", back: "An alert that appears malicious but is actually benign activity." }
+  ],
+
+  glossary: {
+    "IOC": { simple: "A clue that a breach happened.", technical: "Indicator of Compromise — forensic artifact (IP, domain, hash, URL) that indicates a security breach.", example: "The IP 185.220.101.42 was seen in malware C2 traffic.", soc: "SOC analysts use IOCs to search for other compromised hosts." },
+    "TTP": { simple: "How an attacker behaves.", technical: "Tactics, Techniques, and Procedures — the patterns of an adversary's behavior.", example: "Emotet's TTP includes maldoc delivery → macro execution → PowerShell download.", soc: "Mapping TTPs to MITRE ATT&CK helps predict attacker next steps." },
+    "SIEM": { simple: "A tool that collects and analyzes security logs.", technical: "Security Information and Event Management — aggregates logs, normalizes them, correlates events, and generates alerts.", example: "Splunk, Microsoft Sentinel, Elastic Security.", soc: "The primary tool an L1 analyst uses every shift." },
+    "EDR": { simple: "Security software on endpoints.", technical: "Endpoint Detection and Response — monitors endpoint behavior, detects threats, and enables response actions like isolation.", example: "CrowdStrike, Microsoft Defender for Endpoint, SentinelOne.", soc: "EDR provides process-level visibility that logs alone cannot." },
+    "MITRE ATT&CK": { simple: "A catalog of how attackers operate.", technical: "A globally-accessible knowledge base of adversary tactics and techniques based on real-world observations.", example: "T1059 — Command and Scripting Interpreter (PowerShell).", soc: "Used to classify incidents, build detections, and hunt threats." },
+    "SOC": { simple: "The team that defends the organization.", technical: "Security Operations Center — a team that monitors, detects, and responds to security incidents 24/7.", example: "A typical SOC has L1 (triage), L2 (investigation), L3 (threat hunting) analysts.", soc: "This is where you'll work as an L1 analyst." },
+    "Phishing": { simple: "Fake emails trying to trick you.", technical: "A social engineering attack using fraudulent messages to steal credentials or deliver malware.", example: "Email pretending to be from your bank asking you to 'verify your account.'", soc: "Phishing is the #1 initial access vector — every analyst sees phishing alerts daily." }
+  },
+
+  cheatSheets: {
+    "networking": {
+      title: "Networking Cheat Sheet",
+      content: `
+<h3>Common Ports</h3>
+<table>
+  <tr><th>Port</th><th>Protocol</th><th>Use</th></tr>
+  <tr><td>21</td><td>FTP</td><td>File transfer</td></tr>
+  <tr><td>22</td><td>SSH</td><td>Secure shell</td></tr>
+  <tr><td>23</td><td>Telnet</td><td>Unencrypted remote (insecure)</td></tr>
+  <tr><td>25</td><td>SMTP</td><td>Email sending</td></tr>
+  <tr><td>53</td><td>DNS</td><td>Domain resolution</td></tr>
+  <tr><td>80</td><td>HTTP</td><td>Web (unencrypted)</td></tr>
+  <tr><td>110</td><td>POP3</td><td>Email receiving</td></tr>
+  <tr><td>143</td><td>IMAP</td><td>Email receiving</td></tr>
+  <tr><td>443</td><td>HTTPS</td><td>Web (encrypted)</td></tr>
+  <tr><td>445</td><td>SMB</td><td>Windows file sharing</td></tr>
+  <tr><td>3389</td><td>RDP</td><td>Remote desktop</td></tr>
+</table>
+<h3>TCP vs UDP</h3>
+<p><strong>TCP:</strong> reliable, connection-oriented. Used for HTTP, SSH, email.</p>
+<p><strong>UDP:</strong> fast, connectionless. Used for DNS, streaming, VoIP.</p>
+<h3>Private IP Ranges</h3>
+<ul>
+  <li>10.0.0.0 – 10.255.255.255</li>
+  <li>172.16.0.0 – 172.31.255.255</li>
+  <li>192.168.0.0 – 192.168.255.255</li>
+</ul>`
+    },
+    "windows-events": {
+      title: "Windows Event ID Cheat Sheet",
+      content: `
+<table>
+  <tr><th>Event ID</th><th>Meaning</th><th>SOC Relevance</th></tr>
+  <tr><td>4624</td><td>Successful logon</td><td>Confirm/deny access</td></tr>
+  <tr><td>4625</td><td>Failed logon</td><td>Brute force detection</td></tr>
+  <tr><td>4672</td><td>Special privileges assigned</td><td>Admin activity</td></tr>
+  <tr><td>4688</td><td>Process creation</td><td>Malware execution</td></tr>
+  <tr><td>4720</td><td>User account created</td><td>Persistence</td></tr>
+  <tr><td>4728</td><td>User added to global group</td><td>Privilege escalation</td></tr>
+  <tr><td>4732</td><td>User added to local group</td><td>Privilege escalation</td></tr>
+  <tr><td>4740</td><td>Account locked out</td><td>Brute force indicator</td></tr>
+  <tr><td>1102</td><td>Audit log cleared</td><td>Anti-forensics</td></tr>
+  <tr><td>7045</td><td>New service installed</td><td>Persistence</td></tr>
+</table>`
+    },
+    "siem-queries": {
+      title: "SIEM Query Cheat Sheet",
+      content: `
+<h3>Splunk (SPL)</h3>
+<pre># Failed logons
+index=security EventCode=4625 | stats count by Account_Name, Source_Network_Address
+
+# Process creation
+index=sysmon EventCode=1 | table _time, Computer, ParentCommandLine, CommandLine
+
+# Suspicious outbound
+index=network dest_port=443 bytes_out&gt;10000000 | stats sum(bytes_out) by src_ip, dest_ip</pre>
+
+<h3>KQL (Microsoft Sentinel)</h3>
+<pre>// Failed logons
+SecurityEvent
+| where EventID == 4625
+| summarize count() by Account, IpAddress
+
+// Process creation
+SecurityEvent
+| where EventID == 4688
+| project TimeGenerated, Computer, Account, NewProcessName, CommandLine</pre>
+
+<h3>Elastic (KQL)</h3>
+<pre>event.code:4625 AND winlog.event_data.TargetUserName:admin
+process.name:powershell AND process.parent.name:WINWORD.EXE</pre>`
+    },
+    "ir-workflow": {
+      title: "Incident Response Workflow",
+      content: `
+<h3>NIST 4-Phase Model</h3>
+<ol>
+  <li><strong>Preparation</strong> — policies, tools, training, playbooks</li>
+  <li><strong>Detection & Analysis</strong> — triage, validate, scope</li>
+  <li><strong>Containment, Eradication, Recovery</strong> — stop the attack, remove the threat, restore systems</li>
+  <li><strong>Post-Incident</strong> — lessons learned, report, improve</li>
+</ol>
+
+<h3>L1 Triage Checklist</h3>
+<ol>
+  <li>Validate the alert (is it real?)</li>
+  <li>Identify affected user/host</li>
+  <li>Check timeline</li>
+  <li>Check source IP reputation</li>
+  <li>Check related events</li>
+  <li>Determine scope</li>
+  <li>Classify: True Positive / False Positive / Benign Positive</li>
+  <li>Escalate if required</li>
+  <li>Document everything</li>
+  <li>Close or hand off</li>
+</ol>`
+    },
+    "mitre": {
+      title: "MITRE ATT&CK Quick Reference",
+      content: `
+<h3>Common Tactics & Techniques for SOC</h3>
+<table>
+  <tr><th>Tactic</th><th>Technique</th><th>Example</th></tr>
+  <tr><td>Initial Access</td><td>T1566 Phishing</td><td>Maldoc email</td></tr>
+  <tr><td>Execution</td><td>T1059 PowerShell</td><td>Encoded command</td></tr>
+  <tr><td>Persistence</td><td>T1053 Scheduled Task</td><td>Re-execute malware</td></tr>
+  <tr><td>Privilege Escalation</td><td>T1134 Token Impersonation</td><td>UAC bypass</td></tr>
+  <tr><td>Defense Evasion</td><td>T1027 Obfuscated Files</td><td>Base64-encoded payloads</td></tr>
+  <tr><td>Credential Access</td><td>T1003 OS Credential Dumping</td><td>Mimikatz</td></tr>
+  <tr><td>Discovery</td><td>T1082 System Information</td><td>whoami, systeminfo</td></tr>
+  <tr><td>Lateral Movement</td><td>T1021 Remote Services</td><td>RDP, SMB, SSH</td></tr>
+  <tr><td>Collection</td><td>T1005 Data from Local System</td><td>Grabbing documents</td></tr>
+  <tr><td>C2</td><td>T1071 Application Layer Protocol</td><td>HTTPS C2</td></tr>
+  <tr><td>Exfiltration</td><td>T1048 Exfiltration Over Alternative Protocol</td><td>DNS exfil</td></tr>
+  <tr><td>Impact</td><td>T1486 Data Encrypted for Impact</td><td>Ransomware</td></tr>
+</table>`
+    }
+  }
+};
+
+/* ---------- STATE ---------- */
+const state = {
+  currentView: "landing",
+  currentModule: null,
+  currentLesson: null,
+  currentAlert: null,
+  progress: JSON.parse(localStorage.getItem("soc_progress") || "{}"),
+  quizResults: JSON.parse(localStorage.getItem("soc_quizzes") || "{}"),
+  streak: parseInt(localStorage.getItem("soc_streak") || "1"),
+  user: JSON.parse(localStorage.getItem("soc_user") || "null") || { name: "Analyst", email: "analyst@soc.local" },
+  flashcardIndex: 0,
+  flashcardFlipped: false,
+  flashcardKnown: JSON.parse(localStorage.getItem("soc_fc_known") || "[]"),
+  searchQuery: ""
+};
+
+function saveState() {
+  localStorage.setItem("soc_progress", JSON.stringify(state.progress));
+  localStorage.setItem("soc_quizzes", JSON.stringify(state.quizResults));
+  localStorage.setItem("soc_streak", String(state.streak));
+  localStorage.setItem("soc_user", JSON.stringify(state.user));
+  localStorage.setItem("soc_fc_known", JSON.stringify(state.flashcardKnown));
+}
+
+/* ---------- ROUTER ---------- */
+function navigate(view, params = {}) {
+  state.currentView = view;
+  Object.assign(state, params);
+  render();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- SIDEBAR ---------- */
+function renderSidebar() {
+  const nav = [
+    { section: "Learn", items: [
+      { id: "dashboard", label: "Dashboard", icon: "◉" },
+      { id: "roadmap", label: "Learning Roadmap", icon: "🗺️" },
+      { id: "modules", label: "All Modules", icon: "📚" }
+    ]},
+    { section: "Practice", items: [
+      { id: "simulator", label: "SOC Simulator", icon: "🚨" },
+      { id: "flashcards", label: "Flashcards", icon: "🎴" },
+      { id: "interview", label: "Interview Prep", icon: "💼" },
+      { id: "mock-interview", label: "Mock Interview", icon: "🎤" }
+    ]},
+    { section: "Build", items: [
+      { id: "projects", label: "Projects", icon: "🛠️" },
+      { id: "resume", label: "Resume Builder", icon: "📄" },
+      { id: "readiness", label: "Job Readiness", icon: "🎯" }
+    ]},
+    { section: "Reference", items: [
+      { id: "cheatsheets", label: "Cheat Sheets", icon: "📋" },
+      { id: "glossary", label: "Glossary", icon: "📖" },
+      { id: "search", label: "Search", icon: "⌕" }
+    ]}
+  ];
+
+  let html = `
+    <div class="sidebar-logo">
+      <div class="logo-icon">S</div>
+      <div>
+        <h1>SOC Academy</h1>
+        <div class="tag">L1 TRAINING</div>
+      </div>
+    </div>
+  `;
+  nav.forEach(section => {
+    html += `<div class="nav-section">${section.section}</div>`;
+    section.items.forEach(item => {
+      html += `<button class="nav-item ${state.currentView === item.id ? 'active' : ''}" onclick="navigate('${item.id}')">
+        <span class="nav-icon">${item.icon}</span>
+        <span>${item.label}</span>
+      </button>`;
+    });
+  });
+  document.getElementById("sidebar").innerHTML = html;
+}
+
+/* ---------- TOPBAR ---------- */
+function renderTopbar(title) {
+  return `
+    <div class="topbar">
+      <div class="search-bar">
+        <input type="text" placeholder="Search lessons, tools, interview questions, event IDs..."
+               value="${state.searchQuery}" onkeyup="handleSearch(event)">
+      </div>
+      <div class="user-chip">
+        <div class="user-avatar">${state.user.name[0].toUpperCase()}</div>
+        <div>
+          <div class="user-name">${state.user.name}</div>
+          <div class="user-streak">🔥 ${state.streak} day streak</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function handleSearch(e) {
+  state.searchQuery = e.target.value;
+  if (e.key === "Enter" && state.searchQuery.trim()) {
+    navigate("search");
+  }
+}
+
+/* ---------- VIEWS ---------- */
+function viewLanding() {
+  return `
+    <div class="hero">
+      <h1>Become a Job-Ready SOC Analyst L1</h1>
+      <p>Learn cybersecurity from the fundamentals to real-world SOC investigations, detection, incident response, and interviews. Built for complete beginners.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="navigate('dashboard')">Start Learning →</button>
+        <button class="btn btn-secondary" onclick="navigate('roadmap')">View Roadmap</button>
+        <button class="btn btn-secondary" onclick="navigate('simulator')">Try SOC Simulator</button>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <h3>Beginner Friendly</h3>
+        <p>Start from zero. No prior security knowledge required. Every concept explained with analogies.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🧪</div>
+        <h3>Hands-on Labs</h3>
+        <p>Real log analysis, simulated SIEM queries, and interactive exercises — not just reading.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🚨</div>
+        <h3>SOC Simulations</h3>
+        <p>Investigate realistic alerts the way real analysts do. Build triage muscle memory.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💼</div>
+        <h3>Interview Prep</h3>
+        <p>50+ technical, behavioral, and scenario-based questions with model answers.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📄</div>
+        <h3>Resume Guidance</h3>
+        <p>Build a truthful cybersecurity resume based on what you actually learned.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Progress Tracking</h3>
+        <p>See exactly where you are, what's next, and which areas need more work.</p>
+      </div>
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-title mb-3">Your Learning Path</div>
+      <div class="grid grid-4">
+        ${DATA.modules.slice(0, 8).map((m, i) => `
+          <div class="card" style="margin:0; cursor:pointer;" onclick="navigate('module', {currentModule: '${m.id}'})">
+            <div style="font-size: 24px; margin-bottom: 6px;">${m.icon}</div>
+            <div class="text-xs text-muted mb-2">LEVEL ${m.level}</div>
+            <div style="font-weight: 600; font-size: 14px;">${m.title}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function viewDashboard() {
+  const progress = calcOverallProgress();
+  const skills = calcSkills();
+
+  return `
+    ${renderTopbar("Dashboard")}
+    <div class="page-title">Welcome back, ${state.user.name}</div>
+    <div class="page-subtitle">Here's your SOC Analyst training progress.</div>
+
+    <div class="grid grid-4 mb-4">
+      <div class="card">
+        <div class="text-xs text-muted mb-2">OVERALL PROGRESS</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--accent);">${progress}%</div>
+        <div class="progress-bar mt-2"><div class="progress-fill" style="width:${progress}%"></div></div>
+      </div>
+      <div class="card">
+        <div class="text-xs text-muted mb-2">MODULES COMPLETED</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--green);">${Object.values(state.progress).filter(p => p >= 100).length}<span style="font-size:16px; color:var(--text-muted)">/${DATA.modules.length}</span></div>
+        <div class="text-sm text-muted mt-2">Keep going</div>
+      </div>
+      <div class="card">
+        <div class="text-xs text-muted mb-2">LESSONS COMPLETED</div>
+        <div style="font-size: 32px; font-weight: 700;">${Object.keys(state.progress).length}</div>
+        <div class="text-sm text-muted mt-2">Across all modules</div>
+      </div>
+      <div class="card">
+        <div class="text-xs text-muted mb-2">LEARNING STREAK</div>
+        <div style="font-size: 32px; font-weight: 700; color: var(--yellow);">🔥 ${state.streak}</div>
+        <div class="text-sm text-muted mt-2">days in a row</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Current Focus</div>
+          <span class="badge badge-info">IN PROGRESS</span>
+        </div>
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 4px;">🌐 Networking Fundamentals</div>
+        <div class="text-sm text-muted mb-3">Module 1 — IP addresses, ports, protocols, TCP/IP</div>
+        <button class="btn btn-primary" onclick="navigate('lesson', {currentModule:'m1', currentLesson:'m1-l1'})">Continue Learning →</button>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Weak Areas</div>
+          <span class="badge badge-medium">NEEDS WORK</span>
+        </div>
+        <div class="text-sm text-muted mb-3">Topics where quiz performance is below 80%:</div>
+        <ul style="list-style:none; padding:0;">
+          <li style="padding: 8px 0; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+            <span>🔒 Windows Event IDs</span>
+            <span class="text-sm" style="color:var(--red)">62%</span>
+          </li>
+          <li style="padding: 8px 0; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+            <span>📊 SIEM Queries</span>
+            <span class="text-sm" style="color:var(--yellow)">71%</span>
+          </li>
+          <li style="padding: 8px 0; display:flex; justify-content:space-between;">
+            <span>🎯 MITRE ATT&CK Mapping</span>
+            <span class="text-sm" style="color:var(--yellow)">74%</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-title mb-3">Skills Progress</div>
+      <div class="grid grid-2">
+        ${Object.entries(skills).map(([name, pct]) => `
+          <div>
+            <div class="progress-text"><span>${name}</span><span>${pct}%</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title mb-3">Recent Activity</div>
+      <ul style="list-style:none; padding:0;">
+        <li style="padding: 10px 0; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+          <div>
+            <div style="font-weight: 500;">✅ Completed lesson: "What is Cybersecurity?"</div>
+            <div class="text-xs text-muted">Module 0 — Cybersecurity Orientation</div>
+          </div>
+          <div class="text-xs text-muted">2 hours ago</div>
+        </li>
+        <li style="padding: 10px 0; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+          <div>
+            <div style="font-weight: 500;">📝 Quiz passed: Module 0 — 5/5 correct</div>
+            <div class="text-xs text-muted">Score: 100%</div>
+          </div>
+          <div class="text-xs text-muted">Yesterday</div>
+        </li>
+        <li style="padding: 10px 0; display:flex; justify-content:space-between;">
+          <div>
+            <div style="font-weight: 500;">🚨 Investigated alert A001: Brute force attempt</div>
+            <div class="text-xs text-muted">SOC Simulator — classified as True Positive</div>
+          </div>
+          <div class="text-xs text-muted">2 days ago</div>
+        </li>
+      </ul>
+    </div>
+  `;
+}
+
+function calcOverallProgress() {
+  const total = DATA.modules.reduce((sum, m) => sum + m.lessons, 0);
+  const done = Object.keys(state.progress).length;
+  return Math.min(100, Math.round((done / total) * 100));
+}
+
+function calcSkills() {
+  return {
+    "Networking": 55,
+    "Linux": 40,
+    "Windows Security": 35,
+    "SIEM": 20,
+    "Log Analysis": 65,
+    "Incident Response": 30,
+    "Threat Intelligence": 25,
+    "Python": 15
+  };
+}
+
+function viewRoadmap() {
+  return `
+    ${renderTopbar("Roadmap")}
+    <div class="page-title">Your Learning Roadmap</div>
+    <div class="page-subtitle">Follow this path from zero to job-ready. Each level unlocks after completing the previous one.</div>
+
+    <div class="roadmap">
+      ${DATA.modules.map(m => {
+        const progress = state.progress[m.id] || 0;
+        let status = "locked";
+        if (progress >= 100) status = "completed";
+        else if (progress > 0 || m.level <= 1) status = "in-progress";
+
+        return `
+          <div class="roadmap-item ${status}" onclick="${status !== 'locked' ? `navigate('module', {currentModule:'${m.id}'})` : ''}">
+            <div class="level-tag">LEVEL ${m.level} • ${m.icon}</div>
+            <h3>${m.title}</h3>
+            <p>${m.desc}</p>
+            <div class="progress-bar mt-3"><div class="progress-fill" style="width:${progress}%"></div></div>
+            <div class="text-xs text-muted mt-2">${m.lessons} lessons • ${progress}% complete</div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function viewModules() {
+  return `
+    ${renderTopbar("All Modules")}
+    <div class="page-title">All Modules</div>
+    <div class="page-subtitle">22 modules covering everything a SOC Analyst L1 needs to know.</div>
+
+    <div class="grid grid-3">
+      ${DATA.modules.map(m => {
+        const progress = state.progress[m.id] || 0;
+        return `
+          <div class="card" style="cursor:pointer;" onclick="navigate('module', {currentModule:'${m.id}'})">
+            <div style="font-size: 32px; margin-bottom: 10px;">${m.icon}</div>
+            <div class="text-xs text-muted mb-2">LEVEL ${m.level} • ${m.lessons} LESSONS</div>
+            <h3 style="font-size: 16px; margin-bottom: 6px;">${m.title}</h3>
+            <p class="text-sm text-muted mb-3">${m.desc}</p>
+            <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+            <div class="text-xs text-muted mt-2">${progress}% complete</div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function viewModule() {
+  const m = DATA.modules.find(x => x.id === state.currentModule);
+  if (!m) return viewModules();
+
+  // Generate lessons for this module
+  const lessonIds = Object.keys(DATA.lessons).filter(k => k.startsWith(m.id + "-"));
+  const hasFullLessons = lessonIds.length > 0;
+
+  let lessonsHtml;
+  if (hasFullLessons) {
+    lessonsHtml = lessonIds.map((id, i) => {
+      const l = DATA.lessons[id];
+      const done = state.progress[id] ? "✅" : "○";
+      return `
+        <div class="card" style="cursor:pointer;" onclick="navigate('lesson', {currentLesson:'${id}'})">
+          <div class="flex items-center gap-3">
+            <div style="font-size: 22px;">${done}</div>
+            <div style="flex:1;">
+              <div style="font-weight: 600;">${i+1}. ${l.title}</div>
+              <div class="text-xs text-muted mt-2">Difficulty: ${l.difficulty}</div>
+            </div>
+            <div>→</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  } else {
+    // Generate placeholder lessons
+    const topics = getTopicsForModule(m.id);
+    lessonsHtml = topics.map((t, i) => `
+      <div class="card" style="cursor:pointer;" onclick="openLessonStub('${t.title}')">
+        <div class="flex items-center gap-3">
+          <div style="font-size: 22px;">○</div>
+          <div style="flex:1;">
+            <div style="font-weight: 600;">${i+1}. ${t.title}</div>
+            <div class="text-xs text-muted mt-2">Difficulty: ${t.difficulty}</div>
+          </div>
+          <div>→</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  return `
+    ${renderTopbar(m.title)}
+    <button class="btn btn-ghost btn-sm mb-3" onclick="navigate('modules')">← All Modules</button>
+    <div style="display:flex; align-items:center; gap:14px; margin-bottom:8px;">
+      <div style="font-size: 40px;">${m.icon}</div>
+      <div>
+        <div class="text-xs text-muted">LEVEL ${m.level} MODULE</div>
+        <div class="page-title" style="margin:0;">${m.title}</div>
+      </div>
+    </div>
+    <div class="page-subtitle">${m.desc}</div>
+
+    <div class="grid grid-2 mb-4">
+      <div class="card">
+        <div class="card-title mb-2">Module Progress</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--accent);">${state.progress[m.id] || 0}%</div>
+        <div class="progress-bar mt-2"><div class="progress-fill" style="width:${state.progress[m.id] || 0}%"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title mb-2">What You'll Learn</div>
+        <div class="text-sm" style="color: var(--text-secondary);">${m.lessons} lessons covering core concepts, hands-on exercises, and real SOC scenarios.</div>
+        <button class="btn btn-primary btn-sm mt-3" onclick="${hasFullLessons ? `navigate('lesson', {currentLesson:'${lessonIds[0]}'})` : `openLessonStub('${topics[0].title}')`}">Start First Lesson →</button>
+      </div>
+    </div>
+
+    <div class="card-title mb-3">Lessons</div>
+    ${lessonsHtml}
+
+    ${DATA.quizzes[m.id] ? `
+      <div class="card mt-4">
+        <div class="card-title mb-2">Module Quiz</div>
+        <div class="text-sm text-muted mb-3">Test your knowledge. Passing score: 80%.</div>
+        <button class="btn btn-primary" onclick="navigate('quiz', {currentModule:'${m.id}'})">Take Quiz →</button>
+      </div>
+    ` : ""}
+  `;
+}
+
+function getTopicsForModule(moduleId) {
+  const topicsByModule = {
+    "m0": [
+      { title: "What is Cybersecurity?", difficulty: "beginner" },
+      { title: "Threats, Vulnerabilities & Risk", difficulty: "beginner" },
+      { title: "The CIA Triad in Practice", difficulty: "beginner" },
+      { title: "Authentication, Authorization, Accounting", difficulty: "beginner" },
+      { title: "Events, Alerts, and Incidents", difficulty: "beginner" },
+      { title: "IOCs and TTPs", difficulty: "beginner" },
+      { title: "Malware Fundamentals", difficulty: "beginner" },
+      { title: "Phishing & Social Engineering", difficulty: "beginner" },
+      { title: "Security Controls", difficulty: "beginner" },
+      { title: "Blue Team, Red Team, Purple Team", difficulty: "beginner" },
+      { title: "What is a SOC?", difficulty: "beginner" },
+      { title: "Module 0 Quiz", difficulty: "beginner" }
+    ],
+    "m1": [
+      { title: "IP Addresses, Ports & Protocols", difficulty: "beginner" },
+      { title: "TCP vs UDP", difficulty: "beginner" },
+      { title: "The TCP 3-Way Handshake", difficulty: "beginner" },
+      { title: "DNS Explained", difficulty: "beginner" },
+      { title: "DHCP & ARP", difficulty: "beginner" },
+      { title: "HTTP, HTTPS, TLS", difficulty: "beginner" },
+      { title: "Common Ports to Memorize", difficulty: "beginner" },
+      { title: "Private vs Public IPs", difficulty: "beginner" },
+      { title: "Subnetting Basics", difficulty: "intermediate" },
+      { title: "Firewalls & NAT", difficulty: "intermediate" },
+      { title: "VPNs & Proxies", difficulty: "intermediate" },
+      { title: "Wireshark Basics", difficulty: "intermediate" },
+      { title: "Lab: Capture & Analyze Traffic", difficulty: "intermediate" },
+      { title: "Lab: Identify Suspicious Traffic", difficulty: "intermediate" },
+      { title: "Network Attack Types", difficulty: "intermediate" },
+      { title: "DNS Attacks", difficulty: "intermediate" },
+      { title: "MITM Attacks", difficulty: "intermediate" },
+      { title: "Module 1 Quiz", difficulty: "beginner" }
+    ],
+    "m2": [
+      { title: "Linux Filesystem Layout", difficulty: "beginner" },
+      { title: "Linux Users, Groups, Permissions", difficulty: "beginner" },
+      { title: "Essential Linux Commands", difficulty: "beginner" },
+      { title: "Processes & Services", difficulty: "intermediate" },
+      { title: "Reading Linux Logs", difficulty: "intermediate" },
+      { title: "Windows Architecture Basics", difficulty: "beginner" },
+      { title: "Windows Users & Groups", difficulty: "beginner" },
+      { title: "Windows Event Viewer", difficulty: "intermediate" },
+      { title: "Critical Windows Event IDs", difficulty: "intermediate" },
+      { title: "PowerShell for SOC Analysts", difficulty: "intermediate" },
+      { title: "Active Directory Basics", difficulty: "intermediate" },
+      { title: "Lab: Linux Log Analysis", difficulty: "intermediate" },
+      { title: "Lab: Windows Event Analysis", difficulty: "intermediate" },
+      { title: "Lab: Brute Force Detection", difficulty: "intermediate" },
+      { title: "Lab: Suspicious Process Identification", difficulty: "intermediate" },
+      { title: "SSH Log Analysis", difficulty: "intermediate" },
+      { title: "Sysmon Fundamentals", difficulty: "advanced" },
+      { title: "Windows Registry for SOC", difficulty: "advanced" },
+      { title: "Persistence Mechanisms", difficulty: "advanced" },
+      { title: "Module 2 Quiz", difficulty: "beginner" }
+    ],
+    "m3": [
+      { title: "Malware Types Overview", difficulty: "beginner" },
+      { title: "Virus, Worm, Trojan", difficulty: "beginner" },
+      { title: "Ransomware Deep Dive", difficulty: "intermediate" },
+      { title: "RATs & Keyloggers", difficulty: "intermediate" },
+      { title: "Credential Attacks", difficulty: "intermediate" },
+      { title: "Phishing Variants", difficulty: "beginner" },
+      { title: "DDoS Attacks", difficulty: "intermediate" },
+      { title: "Web Attacks: SQLi, XSS", difficulty: "intermediate" },
+      { title: "Social Engineering", difficulty: "beginner" },
+      { title: "Insider Threats", difficulty: "intermediate" },
+      { title: "Supply Chain Attacks", difficulty: "advanced" },
+      { title: "Attack Kill Chain", difficulty: "intermediate" },
+      { title: "Lab: Identify Malware Type", difficulty: "intermediate" },
+      { title: "Lab: Phishing Analysis", difficulty: "intermediate" },
+      { title: "Module 3 Quiz", difficulty: "beginner" }
+    ],
+    "m4": [
+      { title: "Reading Security Logs", difficulty: "beginner" },
+      { title: "Log Sources & Types", difficulty: "beginner" },
+      { title: "Authentication Logs", difficulty: "intermediate" },
+      { title: "Firewall Logs", difficulty: "intermediate" },
+      { title: "DNS & Proxy Logs", difficulty: "intermediate" },
+      { title: "Web Server Logs", difficulty: "intermediate" },
+      { title: "Endpoint Logs", difficulty: "intermediate" },
+      { title: "Email Security Logs", difficulty: "intermediate" },
+      { title: "Lab: Parse Authentication Logs", difficulty: "intermediate" },
+      { title: "Lab: Correlate Multi-Source Logs", difficulty: "advanced" }
+    ],
+    "m5": [
+      { title: "What is SIEM?", difficulty: "beginner" },
+      { title: "Log Collection & Parsing", difficulty: "intermediate" },
+      { title: "Normalization", difficulty: "intermediate" },
+      { title: "Correlation Rules", difficulty: "intermediate" },
+      { title: "Splunk Basics", difficulty: "intermediate" },
+      { title: "Microsoft Sentinel Basics", difficulty: "intermediate" },
+      { title: "Elastic Security Basics", difficulty: "intermediate" },
+      { title: "Writing Detection Rules", difficulty: "advanced" },
+      { title: "Dashboards for SOC", difficulty: "intermediate" },
+      { title: "Lab: Splunk Query Practice", difficulty: "intermediate" },
+      { title: "Lab: KQL Query Practice", difficulty: "intermediate" },
+      { title: "Module 5 Quiz", difficulty: "beginner" }
+    ],
+    "m6": [
+      { title: "What is a SOC?", difficulty: "beginner" },
+      { title: "SOC Team Structure", difficulty: "beginner" },
+      { title: "L1 vs L2 vs L3", difficulty: "beginner" },
+      { title: "A Day in the Life of an L1", difficulty: "beginner" },
+      { title: "Shift Work & Handoffs", difficulty: "beginner" },
+      { title: "Ticketing Systems", difficulty: "intermediate" },
+      { title: "Escalation Procedures", difficulty: "intermediate" },
+      { title: "Lab: Simulated SOC Shift", difficulty: "intermediate" }
+    ],
+    "m7": [
+      { title: "The Triage Process", difficulty: "beginner" },
+      { title: "Validating Alerts", difficulty: "intermediate" },
+      { title: "Collecting Context", difficulty: "intermediate" },
+      { title: "True vs False Positives", difficulty: "intermediate" },
+      { title: "Severity Classification", difficulty: "intermediate" },
+      { title: "Escalation Decisions", difficulty: "intermediate" },
+      { title: "Documentation Standards", difficulty: "intermediate" },
+      { title: "Lab: Triage 10 Alerts", difficulty: "intermediate" },
+      { title: "Lab: Brute Force Triage", difficulty: "intermediate" },
+      { title: "Lab: Malware Alert Triage", difficulty: "intermediate" },
+      { title: "Lab: Impossible Travel", difficulty: "intermediate" },
+      { title: "Lab: Phishing Alert", difficulty: "intermediate" },
+      { title: "Lab: Lateral Movement", difficulty: "advanced" },
+      { title: "Module 7 Quiz", difficulty: "intermediate" }
+    ],
+    "m8": [
+      { title: "IR Frameworks (NIST, SANS)", difficulty: "intermediate" },
+      { title: "Preparation Phase", difficulty: "intermediate" },
+      { title: "Detection & Analysis", difficulty: "intermediate" },
+      { title: "Containment Strategies", difficulty: "advanced" },
+      { title: "Eradication & Recovery", difficulty: "advanced" },
+      { title: "Lessons Learned", difficulty: "intermediate" },
+      { title: "Playbook: Phishing", difficulty: "intermediate" },
+      { title: "Playbook: Malware", difficulty: "intermediate" },
+      { title: "Playbook: Ransomware", difficulty: "advanced" },
+      { title: "Playbook: Compromised Account", difficulty: "intermediate" },
+      { title: "Playbook: Data Exfiltration", difficulty: "advanced" },
+      { title: "Module 8 Quiz", difficulty: "intermediate" }
+    ],
+    "m9": [
+      { title: "What is Threat Intelligence?", difficulty: "beginner" },
+      { title: "Strategic vs Tactical vs Operational", difficulty: "intermediate" },
+      { title: "IOCs in Depth", difficulty: "intermediate" },
+      { title: "Enrichment Tools (VirusTotal, AbuseIPDB)", difficulty: "intermediate" },
+      { title: "Threat Actor Profiling", difficulty: "advanced" },
+      { title: "Threat Feeds", difficulty: "intermediate" },
+      { title: "Lab: IOC Enrichment", difficulty: "intermediate" },
+      { title: "Lab: Threat Actor Research", difficulty: "advanced" },
+      { title: "Lab: Build an IOC List", difficulty: "intermediate" },
+      { title: "Module 9 Quiz", difficulty: "intermediate" }
+    ],
+    "m10": [
+      { title: "What is MITRE ATT&CK?", difficulty: "beginner" },
+      { title: "Tactics Overview", difficulty: "intermediate" },
+      { title: "Initial Access Techniques", difficulty: "intermediate" },
+      { title: "Execution Techniques", difficulty: "intermediate" },
+      { title: "Persistence Techniques", difficulty: "intermediate" },
+      { title: "Privilege Escalation", difficulty: "advanced" },
+      { title: "Defense Evasion", difficulty: "advanced" },
+      { title: "Credential Access", difficulty: "advanced" },
+      { title: "Discovery & Lateral Movement", difficulty: "intermediate" },
+      { title: "C2 & Exfiltration", difficulty: "advanced" },
+      { title: "Impact Techniques", difficulty: "intermediate" },
+      { title: "Lab: Map an Attack to ATT&CK", difficulty: "advanced" },
+      { title: "Lab: Build a Detection Rule", difficulty: "advanced" },
+      { title: "Module 10 Quiz", difficulty: "intermediate" }
+    ],
+    "m11": [
+      { title: "What is EDR?", difficulty: "intermediate" },
+      { title: "Endpoint Telemetry", difficulty: "intermediate" },
+      { title: "Process Trees", difficulty: "intermediate" },
+      { title: "Parent-Child Process Analysis", difficulty: "advanced" },
+      { title: "Command Line Analysis", difficulty: "advanced" },
+      { title: "Persistence on Endpoints", difficulty: "advanced" },
+      { title: "Lab: Analyze a Process Tree", difficulty: "advanced" },
+      { title: "Lab: Detect Suspicious Execution", difficulty: "advanced" },
+      { title: "Lab: Identify Persistence", difficulty: "advanced" },
+      { title: "Module 11 Quiz", difficulty: "intermediate" }
+    ],
+    "m12": [
+      { title: "Active Directory Deep Dive", difficulty: "intermediate" },
+      { title: "Kerberos Authentication", difficulty: "advanced" },
+      { title: "NTLM & Pass-the-Hash", difficulty: "advanced" },
+      { title: "Kerberoasting", difficulty: "advanced" },
+      { title: "Account Lockouts", difficulty: "intermediate" },
+      { title: "Privilege Escalation in AD", difficulty: "advanced" },
+      { title: "Lab: Brute Force in AD", difficulty: "intermediate" },
+      { title: "Lab: Password Spraying", difficulty: "intermediate" },
+      { title: "Lab: Suspicious Account Creation", difficulty: "intermediate" },
+      { title: "Lab: Golden Ticket Basics", difficulty: "advanced" },
+      { title: "Lab: Detect Lateral Movement", difficulty: "advanced" },
+      { title: "Module 12 Quiz", difficulty: "intermediate" }
+    ],
+    "m13": [
+      { title: "Firewalls in Depth", difficulty: "intermediate" },
+      { title: "IDS vs IPS", difficulty: "intermediate" },
+      { title: "Network Monitoring", difficulty: "intermediate" },
+      { title: "DNS Security", difficulty: "intermediate" },
+      { title: "Network Segmentation", difficulty: "intermediate" },
+      { title: "Wireshark for SOC", difficulty: "intermediate" },
+      { title: "Nmap for Analysts", difficulty: "intermediate" },
+      { title: "Lab: Detect Port Scanning", difficulty: "intermediate" },
+      { title: "Lab: Analyze Suspicious DNS", difficulty: "intermediate" },
+      { title: "Module 13 Quiz", difficulty: "intermediate" }
+    ],
+    "m14": [
+      { title: "Email Headers Explained", difficulty: "intermediate" },
+      { title: "SPF, DKIM, DMARC", difficulty: "intermediate" },
+      { title: "Phishing Detection", difficulty: "intermediate" },
+      { title: "Malicious Attachments", difficulty: "intermediate" },
+      { title: "Business Email Compromise", difficulty: "advanced" },
+      { title: "Lab: Analyze a Phishing Email", difficulty: "intermediate" },
+      { title: "Lab: Header Analysis", difficulty: "intermediate" },
+      { title: "Module 14 Quiz", difficulty: "intermediate" }
+    ],
+    "m15": [
+      { title: "Cloud Computing Basics", difficulty: "beginner" },
+      { title: "AWS Core Services", difficulty: "intermediate" },
+      { title: "Azure Core Services", difficulty: "intermediate" },
+      { title: "IAM in the Cloud", difficulty: "intermediate" },
+      { title: "CloudTrail & Azure Activity Logs", difficulty: "intermediate" },
+      { title: "Suspicious Cloud Logins", difficulty: "intermediate" },
+      { title: "Impossible Travel in Cloud", difficulty: "intermediate" },
+      { title: "Public Storage Exposure", difficulty: "intermediate" },
+      { title: "Lab: Cloud Login Investigation", difficulty: "intermediate" },
+      { title: "Module 15 Quiz", difficulty: "intermediate" }
+    ],
+    "m16": [
+      { title: "Nmap Essentials", difficulty: "intermediate" },
+      { title: "Wireshark Deep Dive", difficulty: "intermediate" },
+      { title: "VirusTotal for Analysts", difficulty: "beginner" },
+      { title: "AbuseIPDB", difficulty: "beginner" },
+      { title: "CyberChef Recipes", difficulty: "intermediate" },
+      { title: "Any.Run & URLScan", difficulty: "intermediate" },
+      { title: "Burp Suite Basics", difficulty: "advanced" },
+      { title: "Splunk Deep Dive", difficulty: "advanced" },
+      { title: "Microsoft Sentinel Deep Dive", difficulty: "advanced" },
+      { title: "Sysmon Configuration", difficulty: "advanced" },
+      { title: "PowerShell for Automation", difficulty: "intermediate" },
+      { title: "Linux CLI Mastery", difficulty: "intermediate" },
+      { title: "MITRE ATT&CK Navigator", difficulty: "intermediate" },
+      { title: "Module 16 Quiz", difficulty: "intermediate" }
+    ],
+    "m17": [
+      { title: "Python Basics for SOC", difficulty: "beginner" },
+      { title: "Variables, Lists, Dicts", difficulty: "beginner" },
+      { title: "Loops & Functions", difficulty: "beginner" },
+      { title: "Reading Files", difficulty: "beginner" },
+      { title: "Parsing CSV & JSON", difficulty: "intermediate" },
+      { title: "Regex for Log Parsing", difficulty: "intermediate" },
+      { title: "Requests & APIs", difficulty: "intermediate" },
+      { title: "Project: Log Parser", difficulty: "intermediate" },
+      { title: "Project: IOC Extractor", difficulty: "intermediate" },
+      { title: "Module 17 Quiz", difficulty: "intermediate" }
+    ],
+    "m18": [
+      { title: "Project: Security Log Analyzer", difficulty: "intermediate" },
+      { title: "Project: Mini SOC Dashboard", difficulty: "intermediate" },
+      { title: "Project: Phishing Email Analyzer", difficulty: "intermediate" },
+      { title: "Project: Brute Force Detector", difficulty: "intermediate" },
+      { title: "Project: IOC Analyzer", difficulty: "intermediate" }
+    ],
+    "m19": [
+      { title: "SOC Simulator: Orientation", difficulty: "beginner" },
+      ...Array.from({length: 18}, (_, i) => ({
+        title: `Investigation #${String(i+1).padStart(3, '0')}`,
+        difficulty: i < 6 ? "beginner" : i < 13 ? "intermediate" : "advanced"
+      })),
+      { title: "Final SOC Assessment", difficulty: "advanced" }
+    ],
+    "m20": [
+      { title: "Interview Preparation Overview", difficulty: "beginner" }
+    ],
+    "m21": [
+      { title: "Building Your Cybersecurity Resume", difficulty: "beginner" },
+      { title: "What Skills to List", difficulty: "beginner" },
+      { title: "Projects to Showcase", difficulty: "beginner" },
+      { title: "Job Readiness Assessment", difficulty: "beginner" }
+    ]
+  };
+  return topicsByModule[moduleId] || [{ title: "Introduction", difficulty: "beginner" }];
+}
+
+function viewLesson() {
+  const lesson = DATA.lessons[state.currentLesson];
+  if (!lesson) {
+    return `
+      ${renderTopbar("Lesson")}
+      <button class="btn btn-ghost btn-sm mb-3" onclick="navigate('module', {currentModule:'${state.currentModule}'})">← Back to Module</button>
+      <div class="card">
+        <div class="card-title mb-2">Lesson content is being prepared</div>
+        <div class="text-sm text-muted">This lesson will include: explanation, examples, SOC scenarios, hands-on exercises, quizzes, and interview questions.</div>
+      </div>
+    `;
+  }
+
+  // Mark as read
+  state.progress[state.currentLesson] = 1;
+  const moduleProgress = calcModuleProgress(lesson.moduleId);
+  state.progress[lesson.moduleId] = moduleProgress;
+  saveState();
+
+  const quiz = DATA.quizzes[lesson.moduleId];
+
+  return `
+    ${renderTopbar(lesson.title)}
+    <button class="btn btn-ghost btn-sm mb-3" onclick="navigate('module', {currentModule:'${lesson.moduleId}'})">← Back to Module</button>
+
+    <div class="flex items-center gap-3 mb-3">
+      <span class="badge badge-${lesson.difficulty === 'beginner' ? 'low' : lesson.difficulty === 'intermediate' ? 'medium' : 'high'}">
+        ${lesson.difficulty.toUpperCase()}
+      </span>
+      <span class="text-xs text-muted">Module ${lesson.moduleId.replace('m','')}</span>
+    </div>
+
+    <div class="page-title">${lesson.title}</div>
+
+    <div class="lesson-content">
+      ${lesson.content}
+    </div>
+
+    <div class="card mt-4">
+      <div class="card-title mb-2">✅ Lesson Complete</div>
+      <div class="text-sm text-muted mb-3">Great work! What would you like to do next?</div>
+      <div class="flex gap-2" style="flex-wrap: wrap;">
+        ${quiz ? `<button class="btn btn-primary" onclick="navigate('quiz', {currentModule:'${lesson.moduleId}'})">Take Module Quiz</button>` : ""}
+        <button class="btn btn-secondary" onclick="navigate('module', {currentModule:'${lesson.moduleId}'})">Back to Module</button>
+        <button class="btn btn-secondary" onclick="navigate('simulator')">Try SOC Simulator</button>
+      </div>
+    </div>
+  `;
+}
+
+function calcModuleProgress(moduleId) {
+  const lessonIds = Object.keys(DATA.lessons).filter(k => k.startsWith(moduleId + "-"));
+  if (lessonIds.length === 0) return 0;
+  const done = lessonIds.filter(id => state.progress[id]).length;
+  return Math.round((done / lessonIds.length) * 100);
+}
+
+function viewQuiz() {
+  const moduleId = state.currentModule;
+  const quiz = DATA.quizzes[moduleId];
+  if (!quiz) {
+    return `
+      ${renderTopbar("Quiz")}
+      <div class="card">
+        <div class="card-title">Quiz not available yet</div>
+        <div class="text-sm text-muted">This module's quiz is being prepared.</div>
+        <button class="btn btn-secondary mt-3" onclick="navigate('module', {currentModule:'${moduleId}'})">← Back to Module</button>
+      </div>
+    `;
+  }
+
+  return `
+    ${renderTopbar("Module Quiz")}
+    <button class="btn btn-ghost btn-sm mb-3" onclick="navigate('module', {currentModule:'${moduleId}'})">← Back to Module</button>
+    <div class="page-title">Module Quiz</div>
+    <div class="page-subtitle">Answer all questions. Passing score: 80%.</div>
+
+    <div id="quiz-container">
+      ${quiz.map((q, i) => `
+        <div class="quiz-question" data-q="${i}">
+          <div class="q-num">QUESTION ${i+1} OF ${quiz.length}</div>
+          <div class="q-text">${q.q}</div>
+          ${q.options.map((opt, j) => `
+            <button class="quiz-option" onclick="selectQuizOption(${i}, ${j})">${opt}</button>
+          `).join("")}
+          <div class="quiz-explanation hidden" id="exp-${i}">
+            <strong>Explanation:</strong> ${q.explanation}
+          </div>
+        </div>
+      `).join("")}
+    </div>
+
+    <button class="btn btn-primary mt-3" onclick="submitQuiz()">Submit Quiz</button>
+    <div id="quiz-result" class="card mt-3 hidden"></div>
+  `;
+}
+
+let quizAnswers = {};
+function selectQuizOption(qIdx, optIdx) {
+  quizAnswers[qIdx] = optIdx;
+  const q = document.querySelector(`[data-q="${qIdx}"]`);
+  q.querySelectorAll(".quiz-option").forEach((el, i) => {
+    el.classList.toggle("selected", i === optIdx);
+  });
+}
+
+function submitQuiz() {
+  const moduleId = state.currentModule;
+  const quiz = DATA.quizzes[moduleId];
+  let correct = 0;
+
+  quiz.forEach((q, i) => {
+    const qEl = document.querySelector(`[data-q="${i}"]`);
+    const options = qEl.querySelectorAll(".quiz-option");
+    options.forEach((el, j) => {
+      el.disabled = true;
+      if (j === q.answer) el.classList.add("correct");
+      else if (j === quizAnswers[i] && j !== q.answer) el.classList.add("incorrect");
+    });
+    document.getElementById(`exp-${i}`).classList.remove("hidden");
+    if (quizAnswers[i] === q.answer) correct++;
+  });
+
+  const score = Math.round((correct / quiz.length) * 100);
+  const passed = score >= 80;
+
+  state.quizResults[moduleId] = { score, correct, total: quiz.length };
+  if (passed) {
+    state.progress["quiz-" + moduleId] = 1;
+  }
+  saveState();
+
+  const resultEl = document.getElementById("quiz-result");
+  resultEl.classList.remove("hidden");
+  resultEl.innerHTML = `
+    <div class="card-title" style="color: ${passed ? 'var(--green)' : 'var(--red)'}">
+      ${passed ? '✅ Passed!' : '❌ Not quite yet'}
+    </div>
+    <div style="font-size: 24px; font-weight: 700; margin: 8px 0;">${score}%</div>
+    <div class="text-sm text-muted">${correct} of ${quiz.length} correct. ${passed ? "Great work!" : "Review the explanations above and try again."}</div>
+    <div class="flex gap-2 mt-3">
+      ${!passed ? `<button class="btn btn-secondary" onclick="quizAnswers={}; navigate('quiz', {currentModule:'${moduleId}'})">Retry Quiz</button>` : ""}
+      <button class="btn btn-primary" onclick="navigate('module', {currentModule:'${moduleId}'})">Back to Module</button>
+    </div>
+  `;
+  resultEl.scrollIntoView({ behavior: "smooth" });
+}
+
+function viewSimulator() {
+  return `
+    ${renderTopbar("SOC Simulator")}
+    <div class="page-title">SOC Simulator</div>
+    <div class="page-subtitle">Investigate real-world alerts the way a SOC analyst does. Click an alert to begin.</div>
+
+    <div class="grid grid-4 mb-4">
+      <div class="card">
+        <div class="text-xs text-muted mb-2">ACTIVE ALERTS</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--red);">${DATA.alerts.filter(a => a.severity === 'high' || a.severity === 'critical').length}</div>
+      </div>
+      <div class="card">
+        <div class="text-xs text-muted mb-2">INVESTIGATED</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--green);">1</div>
+      </div>
+      <div class="card">
+        <div class="text-xs text-muted mb-2">ESCALATED</div>
+        <div style="font-size: 28px; font-weight: 700; color: var(--yellow);">0</div>
+      </div>
+      <div class="card">
+        <div class="text-xs text-muted mb-2">FALSE POSITIVES</div>
+        <div style="font-size: 28px; font-weight: 700;">0</div>
+      </div>
+    </div>
+
+    <div class="card-title mb-3">Alert Queue</div>
+    ${DATA.alerts.map(a => `
+      <div class="alert-card severity-${a.severity}" onclick="navigate('alert', {currentAlert:'${a.id}'})">
+        <div class="alert-severity ${a.severity}">${a.severity.toUpperCase()}</div>
+        <div class="alert-body">
+          <div class="alert-title">${a.title}</div>
+          <div class="alert-meta">
+            <span>${a.id}</span>
+            <span>${a.source}</span>
+            <span>${a.time}</span>
+            <span>${a.count} event${a.count > 1 ? 's' : ''}</span>
+          </div>
+        </div>
+        <div>→</div>
+      </div>
+    `).join("")}
+  `;
+}
+
+function viewAlert() {
+  const alert = DATA.alerts.find(a => a.id === state.currentAlert);
+  if (!alert) return viewSimulator();
+
+  const investigation = DATA.alertInvestigations[alert.id];
+
+  return `
+    ${renderTopbar("Alert Investigation")}
+    <button class="btn btn-ghost btn-sm mb-3" onclick="navigate('simulator')">← Back to Queue</button>
+
+    <div class="alert-card severity-${alert.severity}" style="cursor: default;">
+      <div class="alert-severity ${alert.severity}">${alert.severity.toUpperCase()}</div>
+      <div class="alert-body">
+        <div class="alert-title">${alert.title}</div>
+        <div class="alert-meta">
+          <span>${alert.id}</span>
+          <span>${alert.time}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2 mt-4">
+      <div class="card">
+        <div class="card-title mb-3">Alert Details</div>
+        <div class="text-sm" style="color: var(--text-secondary); line-height: 1.8;">
+          <div><strong style="color: var(--text-primary);">Source:</strong> ${alert.source}</div>
+          <div><strong style="color: var(--text-primary);">Target:</strong> ${alert.target}</div>
+          <div><strong style="color: var(--text-primary);">Time:</strong> ${alert.time}</div>
+          <div><strong style="color: var(--text-primary);">Event Count:</strong> ${alert.count}</div>
+          <div><strong style="color: var(--text-primary);">Geolocation:</strong> ${alert.geo}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title mb-3">Description</div>
+        <div class="text-sm" style="color: var(--text-secondary);">${alert.description}</div>
+      </div>
+    </div>
+
+    ${investigation ? `
+      <div class="card-title mt-4 mb-3">Investigation Questions</div>
+      ${investigation.questions.map((q, i) => `
+        <div class="quiz-question" data-aq="${i}">
+          <div class="q-num">STEP ${i+1}</div>
+          <div class="q-text">${q.q}</div>
+          ${q.options.map((opt, j) => `
+            <button class="quiz-option" onclick="selectAlertOption(${i}, ${j})">${opt}</button>
+          `).join("")}
+          <div class="quiz-explanation hidden" id="aexp-${i}">
+            <strong>Expected reasoning:</strong> ${q.explanation}
+          </div>
+        </div>
+      `).join("")}
+      <button class="btn btn-primary mt-3" onclick="submitAlert()">Submit Investigation</button>
+      <div id="alert-result" class="card mt-3 hidden"></div>
+    ` : `
+      <div class="card mt-4">
+        <div class="card-title mb-2">Investigation scenario coming soon</div>
+        <div class="text-sm text-muted">This alert is part of the expanded simulator with 20+ scenarios.</div>
+      </div>
+    `}
+  `;
+}
+
+let alertAnswers = {};
+function selectAlertOption(qIdx, optIdx) {
+  alertAnswers[qIdx] = optIdx;
+  const q = document.querySelector(`[data-aq="${qIdx}"]`);
+  q.querySelectorAll(".quiz-option").forEach((el, i) => {
+    el.classList.toggle("selected", i === optIdx);
+  });
+}
+
+function submitAlert() {
+  const alert = DATA.alerts.find(a => a.id === state.currentAlert);
+  const investigation = DATA.alertInvestigations[alert.id];
+
+  let correct = 0;
+  investigation.questions.forEach((q, i) => {
+    const qEl = document.querySelector(`[data-aq="${i}"]`);
+    const options = qEl.querySelectorAll(".quiz-option");
+    options.forEach((el, j) => {
+      el.disabled = true;
+      if (j === q.answer) el.classList.add("correct");
+      else if (j === alertAnswers[i] && j !== q.answer) el.classList.add("incorrect");
+    });
+    document.getElementById(`aexp-${i}`).classList.remove("hidden");
+    if (alertAnswers[i] === q.answer) correct++;
+  });
+
+  const score = Math.round((correct / investigation.questions.length) * 100);
+  const resultEl = document.getElementById("alert-result");
+  resultEl.classList.remove("hidden");
+  resultEl.innerHTML = `
+    <div class="card-title" style="color: ${score >= 80 ? 'var(--green)' : 'var(--yellow)'}">
+      Investigation Complete — ${score}%
+    </div>
+    <div class="text-sm text-muted mt-2">${correct} of ${investigation.questions.length} steps matched expected analyst reasoning.</div>
+    <div class="flex gap-2 mt-3">
+      <button class="btn btn-secondary" onclick="navigate('simulator')">Next Alert</button>
+      <button class="btn btn-primary" onclick="navigate('dashboard')">Back to Dashboard</button>
+    </div>
+  `;
+  resultEl.scrollIntoView({ behavior: "smooth" });
+}
+
+function viewFlashcards() {
+  const card = DATA.flashcards[state.flashcardIndex];
+  const isKnown = state.flashcardKnown.includes(state.flashcardIndex);
+
+  return `
+    ${renderTopbar("Flashcards")}
+    <div class="page-title">Flashcards</div>
+    <div class="page-subtitle">Click the card to flip. Mark as "Known" or "Need Practice".</div>
+
+    <div class="flex justify-between items-center mb-3">
+      <div class="text-sm text-muted">Card ${state.flashcardIndex + 1} of ${DATA.flashcards.length}</div>
+      <div class="text-sm">
+        <span style="color: var(--green);">✓ ${state.flashcardKnown.length} known</span>
+        <span style="color: var(--text-muted); margin-left: 14px;">○ ${DATA.flashcards.length - state.flashcardKnown.length} to practice</span>
+      </div>
+    </div>
+
+    <div class="flashcard ${state.flashcardFlipped ? 'flipped' : ''}" onclick="state.flashcardFlipped = !state.flashcardFlipped; render();">
+      <div class="flashcard-label">${state.flashcardFlipped ? 'ANSWER' : 'QUESTION'}</div>
+      <div class="flashcard-text">${state.flashcardFlipped ? card.back : card.front}</div>
+      <div class="flashcard-hint">Click to ${state.flashcardFlipped ? 'see question' : 'reveal answer'}</div>
+    </div>
+
+    <div class="flex gap-2 mt-4 justify-between">
+      <button class="btn btn-secondary" onclick="prevFlashcard()">← Previous</button>
+      <div class="flex gap-2">
+        <button class="btn btn-secondary" onclick="markFlashcard(false)">Need Practice</button>
+        <button class="btn btn-success" onclick="markFlashcard(true)">✓ Known</button>
+      </div>
+      <button class="btn btn-secondary" onclick="nextFlashcard()">Next →</button>
+    </div>
+  `;
+}
+
+function nextFlashcard() {
+  state.flashcardIndex = (state.flashcardIndex + 1) % DATA.flashcards.length;
+  state.flashcardFlipped = false;
+  render();
+}
+function prevFlashcard() {
+  state.flashcardIndex = (state.flashcardIndex - 1 + DATA.flashcards.length) % DATA.flashcards.length;
+  state.flashcardFlipped = false;
+  render();
+}
+function markFlashcard(known) {
+  const idx = state.flashcardIndex;
+  if (known) {
+    if (!state.flashcardKnown.includes(idx)) state.flashcardKnown.push(idx);
+  } else {
+    state.flashcardKnown = state.flashcardKnown.filter(i => i !== idx);
+  }
+  saveState();
+  nextFlashcard();
+}
+
+function viewInterview() {
+  const categories = [...new Set(DATA.interviewQuestions.map(q => q.category))];
+  return `
+    ${renderTopbar("Interview Prep")}
+    <div class="page-title">Interview Preparation</div>
+    <div class="page-subtitle">${DATA.interviewQuestions.length}+ questions across technical, behavioral, and scenario-based categories.</div>
+
+    <div class="tabs">
+      ${categories.map((c, i) => `<div class="tab ${i === 0 ? 'active' : ''}" onclick="filterInterview('${c}', this)">${c}</div>`).join("")}
+      <div class="tab" onclick="filterInterview('all', this)">All</div>
+    </div>
+
+    <div id="interview-list">
+      ${renderInterviewList('all')}
+    </div>
+  `;
+}
+
+function renderInterviewList(category) {
+  const qs = category === 'all' ? DATA.interviewQuestions : DATA.interviewQuestions.filter(q => q.category === category);
+  return qs.map((q, i) => `
+    <div class="card" onclick="this.querySelector('.answer').classList.toggle('hidden')">
+      <div class="flex items-center gap-3">
+        <span class="badge badge-${q.category === 'Scenario' ? 'high' : q.category === 'SOC' ? 'medium' : 'info'}">${q.category}</span>
+        <div style="flex: 1; font-weight: 500;">${q.q}</div>
+        <div class="text-xs text-muted">Click to reveal</div>
+      </div>
+      <div class="answer hidden mt-3" style="padding: 14px; background: var(--bg-secondary); border-radius: 8px; border-left: 3px solid var(--accent);">
+        <div class="text-xs text-muted mb-2" style="color: var(--accent);">STRONG ANSWER</div>
+        <div class="text-sm" style="color: var(--text-secondary);">${q.answer}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function filterInterview(category, el) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  el.classList.add("active");
+  document.getElementById("interview-list").innerHTML = renderInterviewList(category);
+}
+
+function viewMockInterview() {
+  return `
+    ${renderTopbar("Mock Interview")}
+    <div class="page-title">Mock Interview</div>
+    <div class="page-subtitle">Practice answering like a real candidate. Type your answer, then get feedback.</div>
+
+    <div class="card">
+      <div class="text-xs text-muted mb-2" style="color: var(--accent);">INTERVIEWER QUESTION</div>
+      <div style="font-size: 18px; font-weight: 500; margin-bottom: 16px;">
+        You're working as an L1 SOC analyst. You receive an alert showing 200 failed login attempts against one account from an external IP. Walk me through your investigation.
+      </div>
+
+      <textarea id="mock-answer" style="width: 100%; min-height: 180px; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); padding: 14px; border-radius: 8px; font-family: inherit; font-size: 14px; resize: vertical;" placeholder="Type your answer here..."></textarea>
+
+      <div class="flex gap-2 mt-3">
+        <button class="btn btn-primary" onclick="submitMock()">Get Feedback</button>
+        <button class="btn btn-secondary" onclick="skipMock()">Skip Question</button>
+      </div>
+
+      <div id="mock-feedback" class="mt-3 hidden"></div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-title mb-2">Tips for Strong Answers</div>
+      <ul style="color: var(--text-secondary); padding-left: 20px;">
+        <li>Structure your answer: first step → investigation → decision → documentation.</li>
+        <li>Mention specific tools and log sources (SIEM, EDR, firewall, email gateway).</li>
+        <li>Show you think about scope: is this one host or many?</li>
+        <li>Explain your escalation criteria.</li>
+        <li>Always mention documentation — it's critical in a SOC.</li>
+      </ul>
+    </div>
+  `;
+}
+
+function submitMock() {
+  const answer = document.getElementById("mock-answer").value.trim();
+  if (!answer) return;
+
+  const keywords = ["4625", "4624", "siem", "ip", "source", "brute", "password", "escalat", "document", "timeline", "user", "success", "block", "firewall"];
+  const found = keywords.filter(k => answer.toLowerCase().includes(k));
+  const score = Math.min(100, found.length * 10);
+
+  const feedback = document.getElementById("mock-feedback");
+  feedback.classList.remove("hidden");
+  feedback.innerHTML = `
+    <div class="card" style="border-left: 4px solid ${score >= 60 ? 'var(--green)' : 'var(--yellow)'};">
+      <div class="card-title" style="color: ${score >= 60 ? 'var(--green)' : 'var(--yellow)'};">
+        Feedback — ${score}/100
+      </div>
+      <div class="text-sm mt-2" style="color: var(--text-secondary);">
+        <strong>Strengths:</strong> You ${found.length > 5 ? 'covered many key concepts' : 'mentioned some relevant points'}.<br>
+        <strong>Keywords detected:</strong> ${found.length > 0 ? found.join(", ") : "none"}<br>
+        <strong>What a strong answer includes:</strong>
+        <ul style="margin-top: 8px; padding-left: 20px;">
+          <li>Check for successful logins (Event ID 4624) from the same IP</li>
+          <li>Look up the source IP reputation (AbuseIPDB, VirusTotal)</li>
+          <li>Check the targeted account's role and recent activity</li>
+          <li>Review timeline — when did this start?</li>
+          <li>If no success: block IP at firewall, mark as brute force</li>
+          <li>If success: isolate host, escalate to L2/IR</li>
+          <li>Document everything in the ticket</li>
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+function skipMock() {
+  alert("Next question would appear here. The full mock interview includes 20+ rotating questions across all categories.");
+}
+
+function viewProjects() {
+  const projects = [
+    { title: "Security Log Analyzer", desc: "Parse log files, identify failed logins, summarize suspicious IPs.", tech: "Python, Regex, CSV", difficulty: "Beginner" },
+    { title: "Mini SOC Dashboard", desc: "Web dashboard showing alerts, severity, status, and investigation notes.", tech: "HTML/CSS/JS or React", difficulty: "Intermediate" },
+    { title: "Phishing Email Analyzer", desc: "Extract headers, check SPF/DKIM/DMARC, identify suspicious URLs.", tech: "Python, email library", difficulty: "Intermediate" },
+    { title: "Brute Force Detection System", desc: "Read auth logs, detect high-volume failures, generate alerts.", tech: "Python, log parsing", difficulty: "Intermediate" },
+    { title: "Threat Intelligence IOC Analyzer", desc: "Take IOCs, query VirusTotal/AbuseIPDB, produce enrichment report.", tech: "Python, REST APIs", difficulty: "Advanced" }
+  ];
+
+  return `
+    ${renderTopbar("Projects")}
+    <div class="page-title">SOC Projects</div>
+    <div class="page-subtitle">Build portfolio-ready projects. Each one demonstrates skills interviewers look for.</div>
+
+    <div class="grid grid-2">
+      ${projects.map(p => `
+        <div class="card">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge badge-${p.difficulty === 'Beginner' ? 'low' : p.difficulty === 'Intermediate' ? 'medium' : 'high'}">${p.difficulty}</span>
+          </div>
+          <h3 style="font-size: 17px; margin-bottom: 8px;">${p.title}</h3>
+          <p class="text-sm text-muted mb-3">${p.desc}</p>
+          <div class="text-xs text-muted"><strong>Tech:</strong> ${p.tech}</div>
+          <div class="flex gap-2 mt-3">
+            <button class="btn btn-primary btn-sm" onclick="alert('Project guide with step-by-step instructions, architecture, and resume bullets would open here.')">View Guide</button>
+            <button class="btn btn-secondary btn-sm" onclick="alert('Starter code and sample data would be provided here.')">Starter Code</button>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function viewResume() {
+  return `
+    ${renderTopbar("Resume Builder")}
+    <div class="page-title">Build Your Cybersecurity Resume</div>
+    <div class="page-subtitle">Generate a truthful resume based on what you've actually learned. No invented metrics.</div>
+
+    <div class="callout callout-warn mb-4">
+      <strong>Important:</strong> This tool generates bullets based ONLY on what you've completed. It will never invent percentages, company experience, or certifications you haven't earned.
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-title mb-3">Your Profile</div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div>
+            <label class="text-xs text-muted">Name</label>
+            <input type="text" value="${state.user.name}" onchange="state.user.name = this.value; saveState();" style="width: 100%; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px; margin-top: 4px;">
+          </div>
+          <div>
+            <label class="text-xs text-muted">Education</label>
+            <input type="text" placeholder="e.g., BSc Computer Science (in progress)" style="width: 100%; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px; margin-top: 4px;">
+          </div>
+          <div>
+            <label class="text-xs text-muted">Programming Languages</label>
+            <input type="text" placeholder="e.g., Python, JavaScript" style="width: 100%; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px; margin-top: 4px;">
+          </div>
+          <div>
+            <label class="text-xs text-muted">Certifications Earned (only if real)</label>
+            <input type="text" placeholder="e.g., CompTIA Security+ (or 'None yet')" style="width: 100%; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); padding: 8px; border-radius: 6px; margin-top: 4px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title mb-3">Suggested Skills (based on progress)</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          ${[
+            { name: "Networking Fundamentals", ready: true },
+            { name: "Linux CLI", ready: true },
+            { name: "Windows Event Logs", ready: true },
+            { name: "SIEM Concepts", ready: false },
+            { name: "Log Analysis", ready: true },
+            { name: "Incident Response", ready: false },
+            { name: "MITRE ATT&CK", ready: false },
+            { name: "Python for Security", ready: false },
+            { name: "Wireshark", ready: false },
+            { name: "Threat Intelligence", ready: false }
+          ].map(s => `
+            <span class="badge badge-${s.ready ? 'low' : 'info'}">${s.ready ? '✓' : '○'} ${s.name}</span>
+          `).join("")}
+        </div>
+        <div class="text-xs text-muted mt-3">Skills are suggested based on your completed lessons. Only list skills you can discuss in an interview.</div>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-title mb-3">Sample Resume Bullets (truthful, based on learning)</div>
+      <ul style="color: var(--text-secondary); padding-left: 20px; line-height: 1.9;">
+        <li>Built a Python-based log analyzer to identify repeated failed authentication attempts and summarize suspicious IP activity.</li>
+        <li>Completed 20+ hands-on SOC investigations covering brute force, malware, phishing, and lateral movement scenarios.</li>
+        <li>Developed a phishing email analyzer that extracts headers and validates SPF/DKIM/DMARC configuration.</li>
+        <li>Practiced triaging SIEM alerts using Splunk SPL and Microsoft Sentinel KQL queries.</li>
+        <li>Mapped real-world attack scenarios to the MITRE ATT&CK framework to understand adversary behavior.</li>
+      </ul>
+      <div class="callout callout-info mt-3">
+        <strong>Tip:</strong> Customize these bullets based on the projects you actually complete. Interviewers will ask you to explain them.
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-3" onclick="alert('Full resume export (PDF/DOCX) would be generated here based on your inputs.')">Generate Resume</button>
+  `;
+}
+
+function viewReadiness() {
+  const skills = {
+    "Networking": 75, "Linux": 60, "Windows": 65, "SIEM": 50,
+    "Log Analysis": 80, "Incident Response": 55, "Threat Intel": 60, "Interview": 45
+  };
+  const overall = Math.round(Object.values(skills).reduce((a,b) => a+b, 0) / Object.values(skills).length);
+
+  return `
+    ${renderTopbar("Job Readiness")}
+    <div class="page-title">SOC L1 Job Readiness</div>
+    <div class="page-subtitle">Based on your completed learning activities — not a guarantee of employment.</div>
+
+    <div class="card mb-4">
+      <div class="card-title mb-2">Overall Preparation</div>
+      <div style="font-size: 48px; font-weight: 800; color: var(--accent); margin: 8px 0;">${overall}%</div>
+      <div class="progress-bar" style="height: 12px;"><div class="progress-fill" style="width:${overall}%"></div></div>
+      <div class="text-sm text-muted mt-3">This score reflects your progress through the learning platform. Actual job readiness depends on many factors including interview performance, projects, and market conditions.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title mb-3">Skill Breakdown</div>
+      ${Object.entries(skills).map(([name, pct]) => `
+        <div style="margin-bottom: 14px;">
+          <div class="progress-text"><span>${name}</span><span style="color: ${pct >= 75 ? 'var(--green)' : pct >= 50 ? 'var(--yellow)' : 'var(--red)'};">${pct}%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-title mb-2">Areas Needing Improvement</div>
+      <ul style="color: var(--text-secondary); padding-left: 20px;">
+        <li><strong>Interview preparation (45%)</strong> — Practice mock interviews and review scenario-based answers.</li>
+        <li><strong>SIEM (50%)</strong> — Complete more SIEM query labs in Splunk and KQL.</li>
+        <li><strong>Incident Response (55%)</strong> — Work through more IR playbooks and simulations.</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-info mt-3">
+      <strong>Next steps:</strong> Focus on weak areas, complete 2-3 portfolio projects, practice interviews, and build a truthful resume. Job searching is a separate process — this platform prepares you with the skills.
+    </div>
+  `;
+}
+
+function viewCheatSheets() {
+  return `
+    ${renderTopbar("Cheat Sheets")}
+    <div class="page-title">Cheat Sheets</div>
+    <div class="page-subtitle">Quick reference guides for the most important SOC concepts.</div>
+
+    <div class="grid grid-2">
+      ${Object.entries(DATA.cheatSheets).map(([id, cs]) => `
+        <div class="card" style="cursor:pointer;" onclick="openCheatSheet('${id}')">
+          <div style="font-size: 28px; margin-bottom: 8px;">📋</div>
+          <h3 style="font-size: 16px; margin-bottom: 4px;">${cs.title}</h3>
+          <div class="text-sm text-muted">Click to view</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function openCheatSheet(id) {
+  const cs = DATA.cheatSheets[id];
+  const modal = document.createElement("div");
+  modal.className = "modal-overlay";
+  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="flex justify-between items-center mb-3">
+        <h2>${cs.title}</h2>
+        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">✕</button>
+      </div>
+      <div class="lesson-content">${cs.content}</div>
+      <button class="btn btn-primary mt-3" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function openLessonStub(title) {
+  const modal = document.createElement("div");
+  modal.className = "modal-overlay";
+  modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="flex justify-between items-center mb-3">
+        <h2>${title}</h2>
+        <button class="btn btn-ghost" onclick="this.closest('.modal-overlay').remove()">✕</button>
+      </div>
+      <div class="callout callout-info">
+        <strong>Lesson content structure:</strong> This lesson will include aim, why SOC analysts need it, beginner explanation, technical explanation, real-world analogy, example, SOC scenario, hands-on task, quiz, interview questions, and quick revision.
+      </div>
+      <div class="text-sm text-muted mt-3">The full platform includes 100+ lessons with this structure. This demo shows the complete framework with representative content.</div>
+      <button class="btn btn-primary mt-3" onclick="this.closest('.modal-overlay').remove()">Got it</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function viewGlossary() {
+  return `
+    ${renderTopbar("Glossary")}
+    <div class="page-title">Cybersecurity Glossary</div>
+    <div class="page-subtitle">Every term with simple definition, technical definition, example, and SOC relevance.</div>
+
+    <div class="grid grid-2">
+      ${Object.entries(DATA.glossary).map(([term, def]) => `
+        <div class="card">
+          <div style="font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 8px;">${term}</div>
+          <div class="text-sm mb-2"><strong>Simple:</strong> ${def.simple}</div>
+          <div class="text-sm mb-2" style="color: var(--text-secondary);"><strong>Technical:</strong> ${def.technical}</div>
+          <div class="text-sm mb-2" style="color: var(--text-secondary);"><strong>Example:</strong> ${def.example}</div>
+          <div class="text-xs text-muted"><strong>SOC relevance:</strong> ${def.soc}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function viewSearch() {
+  const q = state.searchQuery.toLowerCase();
+  let results = [];
+
+  if (q) {
+    // Search modules
+    DATA.modules.forEach(m => {
+      if (m.title.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q)) {
+        results.push({ type: "Module", title: m.title, desc: m.desc, action: `navigate('module', {currentModule:'${m.id}'})` });
+      }
+    });
+    // Search lessons
+    Object.entries(DATA.lessons).forEach(([id, l]) => {
+      if (l.title.toLowerCase().includes(q) || l.content.toLowerCase().includes(q)) {
+        results.push({ type: "Lesson", title: l.title, desc: "Module " + l.moduleId, action: `navigate('lesson', {currentModule:'${l.moduleId}', currentLesson:'${id}'})` });
+      }
+    });
+    // Search glossary
+    Object.entries(DATA.glossary).forEach(([term, def]) => {
+      if (term.toLowerCase().includes(q) || def.technical.toLowerCase().includes(q)) {
+        results.push({ type: "Glossary", title: term, desc: def.simple, action: `navigate('glossary')` });
+      }
+    });
+    // Search interview questions
+    DATA.interviewQuestions.forEach(iq => {
+      if (iq.q.toLowerCase().includes(q) || iq.answer.toLowerCase().includes(q)) {
+        results.push({ type: "Interview Q", title: iq.q, desc: iq.category, action: `navigate('interview')` });
+      }
+    });
+    // Search event IDs in content
+    if (/\d{4}/.test(q)) {
+      Object.entries(DATA.lessons).forEach(([id, l]) => {
+        if (l.content.includes(q)) {
+          results.push({ type: "Reference", title: `Contains "${q}"`, desc: l.title, action: `navigate('lesson', {currentModule:'${l.moduleId}', currentLesson:'${id}'})` });
+        }
+      });
+    }
+  }
+
+  return `
+    ${renderTopbar("Search")}
+    <div class="page-title">Search</div>
+    <div class="page-subtitle">Search across lessons, tools, interview questions, event IDs, and more.</div>
+
+    <input type="text" value="${state.searchQuery}" onkeyup="state.searchQuery = this.value; if(event.key==='Enter') render();" placeholder="Try: '4625', 'phishing', 'SIEM', 'brute force'" style="width: 100%; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); padding: 12px 16px; border-radius: 8px; font-size: 15px; margin-bottom: 20px;">
+
+    ${q ? `
+      <div class="text-sm text-muted mb-3">${results.length} result${results.length !== 1 ? 's' : ''} for "${state.searchQuery}"</div>
+      ${results.length === 0 ? '<div class="card">No results found. Try a different term.</div>' :
+        results.map(r => `
+          <div class="card" style="cursor:pointer;" onclick="${r.action}">
+            <div class="flex items-center gap-3">
+              <span class="badge badge-info">${r.type}</span>
+              <div style="flex:1;">
+                <div style="font-weight: 500;">${r.title}</div>
+                <div class="text-xs text-muted mt-2">${r.desc}</div>
+              </div>
+              <div>→</div>
+            </div>
+          </div>
+        `).join("")
+      }
+    ` : `
+      <div class="card">
+        <div class="card-title mb-2">Try searching for:</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          ${["4625", "phishing", "SIEM", "brute force", "MITRE", "TCP", "DNS", "ransomware"].map(t =>
+            `<button class="btn btn-secondary btn-sm" onclick="state.searchQuery='${t}'; render();">${t}</button>`
+          ).join("")}
+        </div>
+      </div>
+    `}
+  `;
+}
+
+/* ---------- RENDER ---------- */
+function render() {
+  renderSidebar();
+  const main = document.getElementById("main");
+  const views = {
+    landing: viewLanding,
+    dashboard: viewDashboard,
+    roadmap: viewRoadmap,
+    modules: viewModules,
+    module: viewModule,
+    lesson: viewLesson,
+    quiz: viewQuiz,
+    simulator: viewSimulator,
+    alert: viewAlert,
+    flashcards: viewFlashcards,
+    interview: viewInterview,
+    "mock-interview": viewMockInterview,
+    projects: viewProjects,
+    resume: viewResume,
+    readiness: viewReadiness,
+    cheatsheets: viewCheatSheets,
+    glossary: viewGlossary,
+    search: viewSearch
+  };
+  const viewFn = views[state.currentView] || viewLanding;
+  main.innerHTML = viewFn();
+}
+
+/* ---------- INIT ---------- */
+render();
+</script>
+</body>
+</html>
